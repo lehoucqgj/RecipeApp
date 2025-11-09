@@ -4,7 +4,7 @@ import { open, Database } from 'sqlite';
 let db: Database;
 export const connectDb = async () => {
   db = await open({
-    filename: '../RecipeApp.db',
+    filename: './RecipeApp.db',
     driver: sqlite3.Database
   });
 

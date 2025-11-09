@@ -1,7 +1,7 @@
 import express, { type NextFunction } from 'express';
-import recipeRoutes from './routes/recipes.js';
 import { connectDb } from './db/connection.js';
 import { initDb } from './db/schema.js';
+import recipeRoutes from './routes/recipes.js';
 
 const app = express();
 const port = 3000;
