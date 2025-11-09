@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 router.post('/recipes', async (req, res, next) => {
   const { name, time_to_prepare } = req.body;
   try {
-    const newRecipe = await createRecipe({ name, time_to_prepare });
+    const newRecipe = await createRecipe({name, time_to_prepare});
     res.status(201).json(newRecipe);
   } catch (err) {
     next(err);
