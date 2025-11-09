@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type NextFunction } from 'express';
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 
@@ -72,6 +72,14 @@ const getAllRecipes = async (): Promise<Recipe[]> =>{
   return db.all('SELECT * FROM Recipes;');
 } 
 
+const getRecipeById = async (id: number): Promise<Recipe | undefined> => {
+  return db.get('SELECT * FROM Recipes WHERE id = ?;', id);
+}
+
+const deleteRecipeById = async (id: number): Promise<void> => {
+  await db.run('DELETE FROM Recipes WHERE id = ?;', id);
+}
+
 
 
 const app = express();
@@ -83,6 +91,7 @@ app.get('/', (req, res) => {
   res.send('Recipe API is running');
 });
 
+//TODO: implement error handling middleware
 app.post('/recipes', async (req, res, next) => {
   const { name, time_to_prepare } = req.body;
   try {
@@ -93,12 +102,35 @@ app.post('/recipes', async (req, res, next) => {
   }
 });
 
-//TODO: implement error handling middleware
 app.get('/recipes', async (req, res, next) => {
   try {
     const recipes = await getAllRecipes();
     res.json(recipes);
   } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/recipes/:id', async (req, res, next) => {
+  const recipeId = parseInt(req.params.id as string);
+  try{
+    const recipe = await getRecipeById(recipeId);
+    if(recipe){
+      res.json(recipe);
+    } else {
+      res.status(404).json({ message: 'Recipe not found' });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete('/recipes/:id', async (req, res, next) => {
+  const recipeId = parseInt(req.params.id as string);
+  try{
+    await deleteRecipeById(recipeId);
+    res.status(204).send();
+  }catch(err){
     next(err);
   }
 });
