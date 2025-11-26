@@ -2,12 +2,20 @@ import express, { type NextFunction } from 'express';
 import { connectDb } from './db/connection.js';
 import { initDb } from './db/schema.js';
 import recipeRoutes from './routes/recipes.js';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 //getting the routes from recipes.ts
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 app.use("/", recipeRoutes);
 
 await connectDb();
