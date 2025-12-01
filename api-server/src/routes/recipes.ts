@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRecipe, getAllRecipes, getRecipeById, deleteRecipeById } from '../db/queries.js';
+import { createRecipe, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId } from '../db/queries.js';
 
 const router = express.Router();
 
@@ -49,6 +49,18 @@ router.delete('/recipes/:id', async (req, res, next) => {
     res.status(204).send();
   }catch(err){
     next(err);
+  }
+});
+
+//this endpoint naming might be confusing... 
+//but it gets the ingredients for a specific recipe (via the id)
+router.get('/ingredients/:id', async (req, res) =>{
+  const recipeId = parseInt(req.params.id as string);
+  try{
+    const ingredients = await getIngredientsByRecipeId(recipeId);
+    res.json(ingredients);
+  }catch(err){
+    console.log("error getting ingredients for this recipe");
   }
 });
 

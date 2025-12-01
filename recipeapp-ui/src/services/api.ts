@@ -10,5 +10,5 @@ async function get<Recipe>(endpoint:string): Promise<Recipe> {
 }
 
 export const recipeApi = {
-    getAllRecipes: () => get<Recipe[]>('/films')
-}
+    getAllRecipes: () => get<Recipe[]>('/recipes')
+};
