@@ -5,6 +5,8 @@ interface Recipe {
     id?: number;
     name: string;
     time_to_prepare: number;
+    instructions?: string;
+    servings?: number;
 }
 
 interface Ingredient {
@@ -21,14 +23,18 @@ interface IngredientDetail{
 export const createRecipe = async (recipe: Recipe) => {
     const db = getDb();
   const result = await db.run(
-    'INSERT INTO Recipes (name, time_to_prepare) VALUES (?, ?);',
+    'INSERT INTO Recipes (name, time_to_prepare, instrunctions, servings) VALUES (?, ?, ?, ?);',
     recipe.name,
-    recipe.time_to_prepare
+    recipe.time_to_prepare,
+    recipe.instructions,
+    recipe.servings
   );
   return {
     id: result.lastID,
     name: recipe.name,
-    time_to_prepare: recipe.time_to_prepare
+    time_to_prepare: recipe.time_to_prepare,
+    instructions: recipe.instructions,
+    servings: recipe.servings
   } 
 }
 

@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
 //TODO: implement error handling middleware
 
 router.post('/recipes', async (req, res, next) => {
-  const { name, time_to_prepare } = req.body;
+  const { name, time_to_prepare, instructions, servings } = req.body;
   try {
-    const newRecipe = await createRecipe({name, time_to_prepare});
+    const newRecipe = await createRecipe({name, time_to_prepare, instructions, servings});
     res.status(201).json(newRecipe);
   } catch (err) {
     next(err);
@@ -54,7 +54,7 @@ router.delete('/recipes/:id', async (req, res, next) => {
 
 //this endpoint naming might be confusing... 
 //but it gets the ingredients for a specific recipe (via the id)
-router.get('/ingredients/:id', async (req, res) =>{
+router.get('/recipes/:id/ingredients', async (req, res) =>{
   const recipeId = parseInt(req.params.id as string);
   try{
     const ingredients = await getIngredientsByRecipeId(recipeId);

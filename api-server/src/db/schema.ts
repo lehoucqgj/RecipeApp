@@ -1,5 +1,6 @@
 import { getDb } from './connection.js';
 
+//Depricated, used Dbeaver to update columns
 export const initDb = async () => {
   //TODO: add extra columns as needed (quntity, etc)
   //TODO: Make that if tables are changed, they get updated accordingly

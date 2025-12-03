@@ -4,8 +4,9 @@ export interface Recipe {
     time_to_prepare: number;
 }
 
-export interface ShoppingListItem {
+export interface Ingredient {
     id?: number;
     name: string;
-    quantity: string;    
+    quantity: number;
+    quantifier: string;
 }

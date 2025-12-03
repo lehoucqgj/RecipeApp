@@ -6,14 +6,9 @@ export const RecipeList = () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [recipe, setRecipe] = useState<Recipe>();
-
-    // const addToIngredientList = (recipe: Recipe) => {
-    //     setRecipe(recipe);
-        
-    // }
 
     useEffect(() => {
+        // show all recipes on site load.
         const fetchRecipes = async () => {
             try{
                 setLoading(true);
@@ -29,9 +24,21 @@ export const RecipeList = () => {
         };
         fetchRecipes();
      },[]);
-
      if(loading) return <div className="text-gray-300">Loading</div>;
      if(error) return <div className="text-red-600">Error: {error}</div>;
+
+
+    const handleRecipeClick = async (recipeId: number | undefined) => {
+        try{
+            setLoading(true);
+            //const ingredients = await recipeApi.get
+        } catch(err){
+            setError('No ingredients loaded');
+            console.log(err)
+        } finally{
+            setLoading(false);
+        }
+    }
 
      return (<div className="text-gray-300">
         <h2 className=" my-1 text-3xl">Recipes</h2>
@@ -42,10 +49,7 @@ export const RecipeList = () => {
                 //TODO: Make onClick expand the recipe and show said details.
                 <li 
                     key={r.id} 
-                    onClick={() => {
-                        setRecipe(r);
-                        console.log(recipe?.name); //shows previous one on click. needs useState(overkill imo)
-                    }}
+                    onClick={() => handleRecipeClick(r.id)}
                     className="cursor-pointer hover:bg-blue-700"
                 >
                     {r.name} - {r.time_to_prepare}
