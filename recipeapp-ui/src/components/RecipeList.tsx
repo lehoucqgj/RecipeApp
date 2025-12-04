@@ -24,17 +24,22 @@ export const RecipeList = () => {
             }
         };
         fetchRecipes();
-     },[]);
-     if(loading) return <div className="text-gray-300">Loading</div>;
-     if(error) return <div className="text-red-600">Error: {error}</div>;
+        
+    },[]);
+    
+    useEffect(() => {
+        console.log(ingredients)
+    }, [ingredients]);
 
+    if(loading) return <div className="text-gray-300">Loading</div>;
+    if(error) return <div className="text-red-600">Error: {error}</div>;
+    
 
     const handleRecipeClick = async (recipeId: number) => {
         try{
             setLoading(true);
             const data = await recipeApi.getAllRecipeIngredients(recipeId);
             setIngredients(data);
-            console.log(ingredients);
             setError(null);
         } catch(err){
             setError('No ingredients loaded');
