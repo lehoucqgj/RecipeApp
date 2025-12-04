@@ -52,8 +52,6 @@ router.delete('/recipes/:id', async (req, res, next) => {
   }
 });
 
-//this endpoint naming might be confusing... 
-//but it gets the ingredients for a specific recipe (via the id)
 router.get('/recipes/:id/ingredients', async (req, res) =>{
   const recipeId = parseInt(req.params.id as string);
   try{

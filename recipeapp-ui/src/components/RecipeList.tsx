@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import type { Recipe } from "../types";
+import { type Ingredient, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
 
 export const RecipeList = () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
     useEffect(() => {
         // show all recipes on site load.
@@ -28,10 +29,13 @@ export const RecipeList = () => {
      if(error) return <div className="text-red-600">Error: {error}</div>;
 
 
-    const handleRecipeClick = async (recipeId: number | undefined) => {
+    const handleRecipeClick = async (recipeId: number) => {
         try{
             setLoading(true);
-            //const ingredients = await recipeApi.get
+            const data = await recipeApi.getAllRecipeIngredients(recipeId);
+            setIngredients(data);
+            console.log(ingredients);
+            setError(null);
         } catch(err){
             setError('No ingredients loaded');
             console.log(err)
@@ -49,7 +53,8 @@ export const RecipeList = () => {
                 //TODO: Make onClick expand the recipe and show said details.
                 <li 
                     key={r.id} 
-                    onClick={() => handleRecipeClick(r.id)}
+                    //checks if r.id actually exists '!' after r.id works to, but more forcefull i think
+                    onClick={() => r.id && handleRecipeClick(r.id)}
                     className="cursor-pointer hover:bg-blue-700"
                 >
                     {r.name} - {r.time_to_prepare}
