@@ -7,6 +7,7 @@ export const RecipeList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({});
 
     useEffect(() => {
         // show all recipes on site load.
@@ -36,6 +37,13 @@ export const RecipeList = () => {
     
 
     const handleRecipeClick = async (recipeId: number) => {
+        //expand the recipe
+        setExpandedRecipes(prev => ({
+            ...prev,
+            [recipeId]: !prev[recipeId]
+        }));
+
+        //put ingredients for that recipe in a collection.
         try{
             setLoading(true);
             const data = await recipeApi.getAllRecipeIngredients(recipeId);
@@ -49,25 +57,31 @@ export const RecipeList = () => {
         }
     }
 
-     return (<div className="text-gray-300">
-        <h2 className=" my-1 text-3xl">Recipes</h2>
-        <ul>
-            {recipes.map(r => (
-                //TODO: pass recipe to other compontent or make ingredient list here and pass that.
-                //TODO: Add recipe details to DB
-                //TODO: Make onClick expand the recipe and show said details.
-                <li 
-                    key={r.id} 
-                    //checks if r.id actually exists '!' after r.id works to, but more forcefull i think
-                    onClick={() => r.id && handleRecipeClick(r.id)}
-                    className="cursor-pointer hover:bg-blue-700"
-                >
-                    {r.name} - {r.time_to_prepare}
-                </li>
-            ))}
-        </ul>
-     </div>
-     );
+return (
+  <div className="text-gray-300">
+    <h2 className="my-1 text-3xl">Recipes</h2>
+    <ul>
+      {recipes.map(r => (
+        <li key={r.id}>
+          {/* The clickable recipe name */}
+          <div 
+            onClick={() => r.id && handleRecipeClick(r.id)}
+            className="cursor-pointer hover:bg-blue-700 p-2"
+          >
+            {r.name} - {r.time_to_prepare}
+          </div>
+          
+          {/* This part shows ONLY when the recipe is expanded */}
+          {r.id && expandedRecipes[r.id] && (
+            <div className="ml-4 mt-2 p-2 bg-gray-800">
+              <p>Mock ingredients for {r.name}</p>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 
 };
