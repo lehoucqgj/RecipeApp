@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { type Ingredient, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
+//import { Button } from "@material-tailwind/react";
 
 export const RecipeList = () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -43,7 +44,7 @@ export const RecipeList = () => {
             [recipeId]: !prev[recipeId]
         }));
 
-        //put ingredients for that recipe in a collection.
+        //put ingredients for that recipe in a collection. shows a new one in console per recipe clicked.
         try{
             setLoading(true);
             const data = await recipeApi.getAllRecipeIngredients(recipeId);
@@ -55,6 +56,10 @@ export const RecipeList = () => {
         } finally{
             setLoading(false);
         }
+    }
+
+    function addBtnClick(id: number | undefined): void {
+        throw new Error("Function not implemented.");
     }
 
 return (
@@ -75,6 +80,9 @@ return (
           {r.id && expandedRecipes[r.id] && (
             <div className="ml-4 mt-2 p-2 bg-gray-800">
               <p>Mock ingredients for {r.name}</p>
+              <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => addBtnClick(r.id)}>Add</button>
             </div>
           )}
         </li>
