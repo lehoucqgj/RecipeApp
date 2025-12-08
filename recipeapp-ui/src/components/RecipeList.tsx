@@ -8,7 +8,8 @@ export const RecipeList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({});
+    const [expandedRecipeId, setExpandedRecipeId] = useState<number | null>(null);
+    const [shoppinglist, setShoppinglist] = useState<Ingredient[]>([]);
 
     useEffect(() => {
         // show all recipes on site load.
@@ -28,38 +29,40 @@ export const RecipeList = () => {
         fetchRecipes();
         
     },[]);
-    
-    useEffect(() => {
-        console.log(ingredients)
-    }, [ingredients]);
+
+  useEffect(() => {
+    console.log("Updated shopping list:", shoppinglist);
+  }, [shoppinglist]);
 
     if(loading) return <div className="text-gray-300">Loading</div>;
     if(error) return <div className="text-red-600">Error: {error}</div>;
     
 
     const handleRecipeClick = async (recipeId: number) => {
-        //expand the recipe
-        setExpandedRecipes(prev => ({
-            ...prev,
-            [recipeId]: !prev[recipeId]
-        }));
+      if (expandedRecipeId === recipeId){
+        setExpandedRecipeId(null);
+        setIngredients([]);
+        return;
+      }
 
-        //put ingredients for that recipe in a collection. shows a new one in console per recipe clicked.
-        try{
-            setLoading(true);
-            const data = await recipeApi.getAllRecipeIngredients(recipeId);
-            setIngredients(data);
-            setError(null);
-        } catch(err){
-            setError('No ingredients loaded');
-            console.log(err)
-        } finally{
-            setLoading(false);
-        }
+      setExpandedRecipeId(recipeId);
+
+      try{
+          setLoading(true);
+          const data = await recipeApi.getAllRecipeIngredients(recipeId);
+          setIngredients(data);
+          setError(null);
+      } catch(err){
+          setError('No ingredients loaded');
+          console.log(err)
+      } finally{
+          setLoading(false);
+      }
     }
 
-    function addBtnClick(id: number | undefined): void {
-        throw new Error("Function not implemented.");
+    const addBtnClick = async (id: number) => {
+        const data = await recipeApi.getAllRecipeIngredients(id);
+        setShoppinglist(prev => [...prev, ...data]);
     }
 
 return (
@@ -77,12 +80,19 @@ return (
           </div>
           
           {/* This part shows ONLY when the recipe is expanded */}
-          {r.id && expandedRecipes[r.id] && (
+          {r.id && expandedRecipeId === r.id && (
             <div className="ml-4 mt-2 p-2 bg-gray-800">
-              <p>Mock ingredients for {r.name}</p>
+              <p>Ingredients for {r.name}:</p>
+              <ul>
+                {ingredients.map (ing => (
+                  <li key={ing.id}>
+                    {ing.name}: {ing.quantity} {ing.quantifier}
+                  </li>
+                ))}
+              </ul>
               <button 
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => addBtnClick(r.id)}>Add</button>
+                onClick={() => r.id && addBtnClick(r.id)}>Add</button>
             </div>
           )}
         </li>
