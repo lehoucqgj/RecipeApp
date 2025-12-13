@@ -1,11 +1,8 @@
-//import { useState } from 'react'
 import './App.css'
 import { RecipeList } from './components/RecipeList'
 import { NavBar } from './components/NavBar'
-//import { Recipe } from './types'
 
 function App() {
-  //const [refreshKey, setRefreshKey] = useState(0);
   
   return (
     <>
