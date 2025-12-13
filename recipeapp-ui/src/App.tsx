@@ -1,14 +1,23 @@
 import './App.css'
-import { RecipeList } from './components/RecipeList'
+import { Routes, Route } from 'react-router-dom'
+
 import { NavBar } from './components/NavBar'
+import { Home } from './components/Home'
+import { RecipeList } from './components/RecipeList'
+import { SchoppingList as ShoppingList } from './components/ShoppingList'
+import { AddRecipe } from './components/AddRecipe'
 
 function App() {
   
   return (
     <>
       <NavBar/>
-      <h1 className="text-gray-300 text-4xl mb-2">Recipe App</h1>
-      <RecipeList/>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/RecipeList' element={<RecipeList />} />
+        <Route path='/ShoppingList' element={<ShoppingList />} />
+        <Route path='/AddRecipe' element={<AddRecipe />} />
+      </Routes>
     </>
   )
 }
