@@ -1,0 +1,11 @@
+TODO (bare minimum):
+
+- get list of ingredients to other page
+- routing for said pages.
+- check how to concatinate multiple recipeIngredients
+- form for making a recipe
+
+TODO (for a better experience)
+- make week schedule, make sure you can select number of meals?
+- remove recipeIngredients from list
+- form for adding ingredients
