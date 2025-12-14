@@ -1,5 +1,5 @@
 export const SchoppingList = () => {
-    return(
+    return (
         <>
             <h1>Your shopping list for this week</h1>
         </>

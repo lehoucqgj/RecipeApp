@@ -14,8 +14,9 @@ interface Ingredient {
   name: string;
 }
 
-interface IngredientDetail{
+interface RecipeIngredientDetail{
   id?: number;
+  recipeId: number;
   name: string;
   quantity: string;
 }
@@ -23,7 +24,7 @@ interface IngredientDetail{
 export const createRecipe = async (recipe: Recipe) => {
     const db = getDb();
   const result = await db.run(
-    'INSERT INTO Recipes (name, time_to_prepare, instrunctions, servings) VALUES (?, ?, ?, ?);',
+    'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?);',
     recipe.name,
     recipe.time_to_prepare,
     recipe.instructions,
@@ -55,9 +56,9 @@ export const deleteRecipeById = async (id: number): Promise<void> => {
 
 
 
-export const getIngredientsByRecipeId = async (id: number): Promise<IngredientDetail[] | undefined> => {
+export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngredientDetail[] | undefined> => {
   const db = getDb();
-  return db.all(`SELECT i.name, ri.quantity
+  return db.all(`SELECT i.name, ri.quantity, ri.recipe_id
           FROM RecipeIngredients ri
           JOIN Ingredients i on ri.ingredient_id = i.id 
           WHERE ri.recipe_id = ?;`, id);

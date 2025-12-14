@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { type Ingredient, type Recipe } from "../types";
+import { type RecipeIngredientDetails, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
-//import { Button } from "@material-tailwind/react";
 
 export const RecipeList = () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const [ingredients, setIngredients] = useState<RecipeIngredientDetails[]>([]);
     const [expandedRecipeId, setExpandedRecipeId] = useState<number | null>(null);
-    const [shoppinglist, setShoppinglist] = useState<Ingredient[]>([]);
+    const [shoppinglist, setShoppinglist] = useState<RecipeIngredientDetails[]>([]);
 
     useEffect(() => {
         // show all recipes on site load.
@@ -61,6 +60,7 @@ export const RecipeList = () => {
     }
 
     const addBtnClick = async (id: number) => {
+      //TODO: Write validation to check for duplicate recipes
         const data = await recipeApi.getAllRecipeIngredients(id);
         setShoppinglist(prev => [...prev, ...data]);
     }
@@ -76,7 +76,7 @@ return (
             onClick={() => r.id && handleRecipeClick(r.id)}
             className="cursor-pointer hover:bg-blue-700 p-2"
           >
-            {r.name} - {r.time_to_prepare}
+            {r.name} - {r.timeToPrepare}
           </div>
           
           {/* This part shows ONLY when the recipe is expanded */}
