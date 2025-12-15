@@ -54,8 +54,6 @@ export const deleteRecipeById = async (id: number): Promise<void> => {
   await db.run('DELETE FROM Recipes WHERE id = ?;', id);
 }
 
-
-
 export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngredientDetail[] | undefined> => {
   const db = getDb();
   return db.all(`SELECT i.name, ri.quantity, ri.recipe_id
