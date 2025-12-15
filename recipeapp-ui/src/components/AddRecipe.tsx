@@ -43,37 +43,43 @@ export const AddRecipe = () => {
             <form onSubmit={handleSubmit}>
                 <h2>Add Recipe</h2>
                 {error && <div className="text-red-700">{error}</div>}
+                <div className="flex flex-col w-2/5 mx-auto">
+                    <input 
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Name"
+                        required
+                        />
+                    <input 
+                        type="number"
+                        name="timeToPrepare"
+                        value={formData.timeToPrepare}
+                        onChange={handleChange}
+                        placeholder="0"
+                        required
+                        />
+                    <input
+                        type="text"
+                        name="instructions"
+                        value={formData.instructions}
+                        onChange={handleChange}
+                        placeholder="Instructions"
+                        />
+                    <input 
+                        type="number"
+                        name="servings"
+                        value={formData.servings}
+                        onChange={handleChange}
+                        placeholder="0"
+                    />
 
-                <input 
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Name"
-                    required
-                />
-                <input 
-                    type="number"
-                    name="timeToPrepare"
-                    value={formData.timeToPrepare}
-                    placeholder="0"
-                    required
-                />
-                <input
-                    type="string"
-                    name="instructions"
-                    value={formData.instructions}
-                    placeholder="Instructions"
-                />
-                <input 
-                    type="number"
-                    name="servings"
-                    value={formData.servings}
-                    placeholder="0"
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Creating...' : 'Add recipe'}
-                </button>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Creating...' : 'Add recipe'}
+                    </button>
+
+                </div>
             </form>
         </>
     );
