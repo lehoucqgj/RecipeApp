@@ -13,6 +13,12 @@ export interface RecipeIngredient {
     quantifier: string;
 }
 
+export interface RecipeIngredientInputDto {
+    name: string;
+    quantity: number;
+    quantifier: string;
+}
+
 export interface RecipeIngredientDetails {
     id?: number;
     name: string;
