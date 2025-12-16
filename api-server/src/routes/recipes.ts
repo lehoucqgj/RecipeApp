@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
 //TODO: implement error handling middleware
 
 router.post('/recipes', async (req, res, next) => {
-  const { name, time_to_prepare, instructions, servings } = req.body;
+  const { name, timeToPrepare, instructions, servings } = req.body;
   try {
-    const newRecipe = await createRecipe({name, time_to_prepare, instructions, servings});
+    const newRecipe = await createRecipe({name, timeToPrepare, instructions, servings});
     res.status(201).json(newRecipe);
   } catch (err) {
     next(err);

@@ -31,19 +31,18 @@ export const AddRecipe = () => {
 
     const handleRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
             setLoading(true);
             setError(null);
             const newRecipe = await recipeApi.createRecipe(recipeFormData);
-            //setRecipeId(newRecipe.id);
+            setRecipeId(newRecipe.id);
             setStep(2);
         } catch(err) {
             setError("Failed to create recipe");
+            console.log(err);
         } finally {
             setLoading(false);
         }
-
     };
 
     return (

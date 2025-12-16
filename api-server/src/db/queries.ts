@@ -4,7 +4,7 @@ import { getDb } from './connection.js';
 interface Recipe {
     id?: number;
     name: string;
-    time_to_prepare: number;
+    timeToPrepare: number;
     instructions?: string;
     servings?: number;
 }
@@ -26,14 +26,14 @@ export const createRecipe = async (recipe: Recipe) => {
   const result = await db.run(
     'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?);',
     recipe.name,
-    recipe.time_to_prepare,
+    recipe.timeToPrepare,
     recipe.instructions,
     recipe.servings
   );
   return {
     id: result.lastID,
     name: recipe.name,
-    time_to_prepare: recipe.time_to_prepare,
+    timeToPrepare: recipe.timeToPrepare,
     instructions: recipe.instructions,
     servings: recipe.servings
   } 
