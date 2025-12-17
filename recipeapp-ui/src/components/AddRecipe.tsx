@@ -23,27 +23,59 @@ export const AddRecipe = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        setRecipeFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        if (step === 1){
+            setRecipeFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+        else if (step === 2){
+            setIngredientsFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
+    //TODO: might be better to use a regular button?
     const handleRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             setLoading(true);
             setError(null);
-            const newRecipe = await recipeApi.createRecipe(recipeFormData);
-            setRecipeId(newRecipe.id);
+            
+            console.log(recipeFormData);
             setStep(2);
         } catch(err) {
-            setError("Failed to create recipe");
+            setError("Failed to create Recipe");
             console.log(err);
         } finally {
             setLoading(false);
         }
     };
+
+    const handleIngredientSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try{
+            setLoading(true);
+            setError(null);
+
+            const newRecipe = await recipeApi.createRecipe(recipeFormData);
+            setRecipeId(newRecipe.id);
+
+            //TODO: write the list of ingredients to the database, using the recipeId above.
+
+        } catch(err) {
+            setError("Failed to create Recipe")
+        } finally {
+            (setLoading(false))
+        }
+
+    }
+
+    const AddIngredient = () => {
+        throw new Error("Function not implemented.");
+    }
 
     return (
         <>
@@ -89,14 +121,14 @@ export const AddRecipe = () => {
 
                     <button type="submit" disabled={loading}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {loading ? 'Creating...' : 'Add recipe'}
+                        {loading ? 'Creating...' : 'Next: Add ingredients'}
                     </button>
 
                 </div>
             </form>
             )}
             {step === 2 &&(
-                <form onSubmit={handleRecipeSubmit}>
+                <form onSubmit={handleIngredientSubmit}>
                     <div className="flex flex-col w-2/5 mx-auto">
                         <h2>Add ingredients</h2>
 
@@ -125,9 +157,20 @@ export const AddRecipe = () => {
                             required
                         />
 
+                        <div>
+                            <ul> List of selected ingredients
+                                
+                            </ul>
+                            <button type="button" disabled={loading}
+                                    onClick={AddIngredient}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Add Ingredient
+                            </button>
+                        </div>
+
                         <button type="submit" disabled={loading}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            {loading ? 'Creating...' : 'Add Ingredients'}
+                            {loading ? 'Creating...' : 'Create Recipe'}
                         </button>
                     </div>
                 </form>
