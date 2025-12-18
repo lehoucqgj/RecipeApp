@@ -19,6 +19,7 @@ export interface RecipeIngredientInputDto {
     quantifier: string;
 }
 
+//TODO: used in RecipeList component, check if one of the other types can be used.
 export interface RecipeIngredientDetails {
     id?: number;
     name: string;

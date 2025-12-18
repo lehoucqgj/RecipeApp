@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { type Recipe, type RecipeIngredient, type RecipeIngredientInputDto } from "../types"
 import { recipeApi } from "../services/api";
 
-export const AddRecipe = () => {
-    const [step, setStep] = useState(1);
-    const [recipeId, setRecipeId] = useState<number>();
-
+export const AddRecipe = () => {   
     const [recipeFormData, setRecipeFormData] = useState<Recipe>({
         name: '',
         timeToPrepare: 0,
@@ -17,10 +14,16 @@ export const AddRecipe = () => {
         quantity: 0,
         quantifier: ''
     });
-
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
+    
+    const [step, setStep] = useState(1);
+    
+    const [recipeId, setRecipeId] = useState<number>();
+    const [ingredientList, setIngredientList] = useState<RecipeIngredientInputDto[]>([]);
+    
+    // TODO: check out to change stepstate stuff to components.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         if (step === 1){
@@ -36,25 +39,18 @@ export const AddRecipe = () => {
             }));
         }
     };
-
-    //TODO: might be better to use a regular button?
-    const handleRecipeSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
-            setError(null);
-            
-            console.log(recipeFormData);
+    
+    const createRecipe = () => {
+        setError(null);
+            if(!recipeFormData.name || recipeFormData.timeToPrepare <= 0){
+                setError("Please fill in name and time to prepare (required fields).");
+                setLoading(false);
+                return
+            }
             setStep(2);
-        } catch(err) {
-            setError("Failed to create Recipe");
-            console.log(err);
-        } finally {
-            setLoading(false);
-        }
     };
-
-    const handleIngredientSubmit = async (e: React.FormEvent) => {
+    
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try{
             setLoading(true);
@@ -74,15 +70,28 @@ export const AddRecipe = () => {
     }
 
     const AddIngredient = () => {
-        throw new Error("Function not implemented.");
+        setError(null);
+        if (!ingredientsFormData.name || ingredientsFormData.quantity <= 0 || !ingredientsFormData.quantifier){
+            setError("Please fill in all required fields");
+            return
+        }
+        if (ingredientList.some(ingr => ingr.name === ingredientsFormData.name)){
+            setError("Duplicate ingredient.");
+            return
+        }
+        setIngredientList(prev => [...prev, ingredientsFormData]);
     }
+
+    // checking up on them datas
+    useEffect(() => {
+        console.log(ingredientList);
+    }, [ingredientList]);
 
     return (
         <>
             <h1>Here you can add new recipes to your cookbook</h1>
             {step === 1 && (
-
-                <form onSubmit={handleRecipeSubmit}>
+                <form>
                 <h2>Add Recipe</h2>
                 {error && <div className="text-red-700">{error}</div>}
                 <div className="flex flex-col w-2/5 mx-auto">
@@ -119,16 +128,18 @@ export const AddRecipe = () => {
                         placeholder="0"
                         />
 
-                    <button type="submit" disabled={loading}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {loading ? 'Creating...' : 'Next: Add ingredients'}
+                    <button type="button" disabled={loading}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={createRecipe}>
+                        Next: Add ingredients
                     </button>
 
                 </div>
             </form>
             )}
+
             {step === 2 &&(
-                <form onSubmit={handleIngredientSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="flex flex-col w-2/5 mx-auto">
                         <h2>Add ingredients</h2>
 
@@ -145,7 +156,7 @@ export const AddRecipe = () => {
                             name="quantity"
                             value={ingredientsFormData.quantity}
                             onChange={handleChange}
-                            placeholder="Name"
+                            placeholder="Quantity"
                             required
                         />
                         <input 
@@ -153,17 +164,22 @@ export const AddRecipe = () => {
                             name="quantifier"
                             value={ingredientsFormData.quantifier}
                             onChange={handleChange}
-                            placeholder="Name"
+                            placeholder="Quantifier"
                             required
                         />
 
                         <div>
                             <ul> List of selected ingredients
-                                
+                                {ingredientList.map (ingr => (
+                                    <li key={ingr.name}>
+                                        {ingr.name}: {ingr.quantity} {ingr.quantifier}
+                                    </li>
+                                ))}
                             </ul>
+                            {error && <div className="text-red-700">{error}</div>}
                             <button type="button" disabled={loading}
-                                    onClick={AddIngredient}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                onClick={AddIngredient}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Add Ingredient
                             </button>
                         </div>

@@ -29,6 +29,7 @@ export const RecipeList = () => {
         
     },[]);
 
+  // To check up on them datas
   useEffect(() => {
     console.log("Updated shopping list:", shoppinglist);
   }, [shoppinglist]);
@@ -84,9 +85,9 @@ return (
             <div className="ml-4 mt-2 p-2 bg-gray-800">
               <p>Ingredients for {r.name}:</p>
               <ul>
-                {ingredients.map (ing => (
-                  <li key={ing.id}>
-                    {ing.name}: {ing.quantity} {ing.quantifier}
+                {ingredients.map (ingr => (
+                  <li key={ingr.id}>
+                    {ingr.name}: {ingr.quantity} {ingr.quantifier}
                   </li>
                 ))}
               </ul>
