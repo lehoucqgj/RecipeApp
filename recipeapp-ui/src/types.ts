@@ -26,3 +26,8 @@ export interface RecipeIngredientDetails {
     quantity: number;
     quantifier: string;
 }
+
+export interface Ingredient {
+    id?: number;
+    name: string;
+}

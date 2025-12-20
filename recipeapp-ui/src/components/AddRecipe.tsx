@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { type Recipe, type RecipeIngredient, type RecipeIngredientInputDto } from "../types"
+import { type Ingredient, type Recipe, type RecipeIngredient, type RecipeIngredientInputDto } from "../types"
 import { recipeApi } from "../services/api";
 
 export const AddRecipe = () => {   
@@ -58,6 +58,10 @@ export const AddRecipe = () => {
 
             const newRecipe = await recipeApi.createRecipe(recipeFormData);
             setRecipeId(newRecipe.id);
+            for (const ingr of ingredientList){
+                const ingredient = await recipeApi.getIngredientByName(ingr.name);
+            }
+                
 
             //TODO: write the list of ingredients to the database, using the recipeId above.
 

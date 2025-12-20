@@ -1,3 +1,4 @@
+import type { promises } from 'dns';
 import { getDb } from './connection.js';
 
 
@@ -60,4 +61,11 @@ export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngred
           FROM RecipeIngredients ri
           JOIN Ingredients i on ri.ingredient_id = i.id 
           WHERE ri.recipe_id = ?;`, id);
+}
+
+export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
+  const db = getDb();
+  return db.get(`SELECT id, name
+                FROM Ingredients
+                WHERE name = ?;`, name);
 }
