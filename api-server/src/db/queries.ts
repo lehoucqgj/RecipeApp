@@ -22,6 +22,13 @@ interface RecipeIngredientDetail{
   quantity: string;
 }
 
+interface RecipeIngredient{
+  recipeId: number;
+  ingredientId: number;
+  quantity: number;
+  quantifier: string;
+}
+
 export const createRecipe = async (recipe: Recipe) => {
     const db = getDb();
   const result = await db.run(
@@ -38,6 +45,18 @@ export const createRecipe = async (recipe: Recipe) => {
     instructions: recipe.instructions,
     servings: recipe.servings
   } 
+}
+
+export const addIngredient = async (ingredient: RecipeIngredient) => {
+  const db = getDb();
+  const result = await db.run(
+    `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier
+     VALUES (?, ?, ?, ?);`,
+    ingredient.recipeId,
+    ingredient.ingredientId,
+    ingredient.quantity,
+    ingredient.quantifier
+    );
 }
 
 export const getAllRecipes = async (): Promise<Recipe[]> =>{

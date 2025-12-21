@@ -26,5 +26,6 @@ export const recipeApi = {
     getAllRecipeIngredients: (id: number) => get<RecipeIngredientDetails[]>(`/recipes/${id}/ingredients`),
     createRecipe: (data: Recipe) => post<Recipe>('/recipes', data),
 
-    getIngredientByName: (name: string) => get<Ingredient>(`/ingredient/${name}`)
+    getIngredientByName: (name: string) => get<Ingredient>(`/ingredient/${name}`),
+    addRecipeIngredient: (data: RecipeIngredientDetails) => post<RecipeIngredientDetails>(`/recipes/ingredient`, data)
 };

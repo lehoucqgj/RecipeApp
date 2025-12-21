@@ -60,10 +60,14 @@ export const AddRecipe = () => {
             setRecipeId(newRecipe.id);
             for (const ingr of ingredientList){
                 const ingredient = await recipeApi.getIngredientByName(ingr.name);
+                const ingredientToAdd: RecipeIngredient = {
+                    //TODO: doublecheck if the 'trustmebro !' wont give problems.
+                    recipeId: recipeId!, 
+                    ingredientId: ingredient.id!, 
+                    quantity: ingredientsFormData.quantity, 
+                    quantifier: ingredientsFormData.quantifier}
+                await recipeApi.addRecipeIngredient
             }
-                
-
-            //TODO: write the list of ingredients to the database, using the recipeId above.
 
         } catch(err) {
             setError("Failed to create Recipe")
