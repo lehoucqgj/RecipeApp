@@ -62,20 +62,23 @@ export const AddRecipe = () => {
                 const ingredient = await recipeApi.getIngredientByName(ingr.name);
                 const ingredientToAdd: RecipeIngredient = {
                     //TODO: doublecheck if the 'trustmebro !' wont give problems.
-                    recipeId: recipeId!, 
+                    recipeId: newRecipe.id!, 
                     ingredientId: ingredient.id!, 
                     quantity: ingredientsFormData.quantity, 
                     quantifier: ingredientsFormData.quantifier}
-                await recipeApi.addRecipeIngredient
+                console.log(ingredientToAdd)
+                await recipeApi.addRecipeIngredient(ingredientToAdd);
             }
 
         } catch(err) {
-            setError("Failed to create Recipe")
+            setError("Failed to create Recipe");
+            console.log(err);
         } finally {
             (setLoading(false))
         }
 
     }
+
 
     const AddIngredient = () => {
         setError(null);

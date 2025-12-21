@@ -1,4 +1,4 @@
-import type { Recipe, RecipeIngredientDetails, Ingredient } from '../types';
+import type { Recipe, RecipeIngredientDetails, Ingredient, RecipeIngredient } from '../types';
 const API_URL = 'http://localhost:3000';
 
 async function get<T>(endpoint: string): Promise<T> {
@@ -27,5 +27,5 @@ export const recipeApi = {
     createRecipe: (data: Recipe) => post<Recipe>('/recipes', data),
 
     getIngredientByName: (name: string) => get<Ingredient>(`/ingredient/${name}`),
-    addRecipeIngredient: (data: RecipeIngredientDetails) => post<RecipeIngredientDetails>(`/recipes/ingredient`, data)
+    addRecipeIngredient: (data: RecipeIngredient) => post<RecipeIngredient>(`/recipes/ingredient`, data)
 };

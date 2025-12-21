@@ -50,13 +50,19 @@ export const createRecipe = async (recipe: Recipe) => {
 export const addIngredient = async (ingredient: RecipeIngredient) => {
   const db = getDb();
   const result = await db.run(
-    `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier
+    `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
      VALUES (?, ?, ?, ?);`,
     ingredient.recipeId,
     ingredient.ingredientId,
     ingredient.quantity,
     ingredient.quantifier
     );
+    return {
+      recipeId: ingredient.recipeId,
+      ingredientId: ingredient.ingredientId,
+      quantity: ingredient.quantity,
+      quantifier: ingredient.quantifier
+    }
 }
 
 export const getAllRecipes = async (): Promise<Recipe[]> =>{
