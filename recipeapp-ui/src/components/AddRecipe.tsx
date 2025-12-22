@@ -20,7 +20,6 @@ export const AddRecipe = () => {
     
     const [step, setStep] = useState(1);
     
-    const [recipeId, setRecipeId] = useState<number>();
     const [ingredientList, setIngredientList] = useState<RecipeIngredientInputDto[]>([]);
     
     // TODO: check out to change stepstate stuff to components.
@@ -52,16 +51,16 @@ export const AddRecipe = () => {
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        //TODO: move stuff to backend so i can use a transaction of sorts.
         try{
             setLoading(true);
             setError(null);
-
             const newRecipe = await recipeApi.createRecipe(recipeFormData);
-            setRecipeId(newRecipe.id);
             for (const ingr of ingredientList){
                 const ingredient = await recipeApi.getIngredientByName(ingr.name);
                 const ingredientToAdd: RecipeIngredient = {
                     //TODO: doublecheck if the 'trustmebro !' wont give problems.
+                    // or you know, validate data.
                     recipeId: newRecipe.id!, 
                     ingredientId: ingredient.id!, 
                     quantity: ingredientsFormData.quantity, 
@@ -69,7 +68,6 @@ export const AddRecipe = () => {
                 console.log(ingredientToAdd)
                 await recipeApi.addRecipeIngredient(ingredientToAdd);
             }
-
         } catch(err) {
             setError("Failed to create Recipe");
             console.log(err);

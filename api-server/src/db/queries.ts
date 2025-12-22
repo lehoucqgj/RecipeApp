@@ -1,7 +1,8 @@
 import type { promises } from 'dns';
 import { getDb } from './connection.js';
+import { resolve } from 'path';
 
-
+//TODO check amount of interfaces
 interface Recipe {
     id?: number;
     name: string;
@@ -63,6 +64,22 @@ export const addIngredient = async (ingredient: RecipeIngredient) => {
       quantity: ingredient.quantity,
       quantifier: ingredient.quantifier
     }
+}
+
+export const createRecipeWithIngredients = async (
+  recipe: Recipe,
+  ingredient: Array<{name: string, quantity: number, quantifier: string}>
+) => {
+  const db = getDb();
+
+  return new Promise((resolve, reject) => {
+    db.run('BEGIN TRANSACTION');
+
+    db.run(
+      'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?)',
+      [recipe.name, recipe.timeToPrepare, recipe.instructions, recipe.servings]
+    )
+  });
 }
 
 export const getAllRecipes = async (): Promise<Recipe[]> =>{
