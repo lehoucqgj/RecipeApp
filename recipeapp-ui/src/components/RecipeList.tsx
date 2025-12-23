@@ -25,8 +25,7 @@ export const RecipeList = () => {
                 setLoading(false);
             }
         };
-        fetchRecipes();
-        
+        fetchRecipes();       
     },[]);
 
   // To check up on them datas
@@ -72,7 +71,7 @@ return (
     <ul>
       {recipes.map(r => (
         <li key={r.id}>
-          {/* The clickable recipe name */}
+          {/* recipe name*/}
           <div 
             onClick={() => r.id && handleRecipeClick(r.id)}
             className="cursor-pointer hover:bg-blue-700 p-2"
@@ -80,13 +79,13 @@ return (
             {r.name} - {r.timeToPrepare}
           </div>
           
-          {/* This part shows ONLY when the recipe is expanded */}
+          {/* details */}
           {r.id && expandedRecipeId === r.id && (
             <div className="ml-4 mt-2 p-2 bg-gray-800">
               <p>Ingredients for {r.name}:</p>
               <ul>
                 {ingredients.map (ingr => (
-                  <li key={ingr.id}>
+                  <li key={`${ingr.id}-${r.id}`}>
                     {ingr.name}: {ingr.quantity} {ingr.quantifier}
                   </li>
                 ))}

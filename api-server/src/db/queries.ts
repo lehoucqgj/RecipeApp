@@ -1,6 +1,5 @@
 import { getDb } from './connection.js';
 
-//TODO check amount of interfaces
 interface Recipe {
     id?: number;
     name: string;
