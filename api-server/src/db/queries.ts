@@ -1,6 +1,4 @@
-import type { promises } from 'dns';
 import { getDb } from './connection.js';
-import { resolve } from 'path';
 
 //TODO check amount of interfaces
 interface Recipe {
@@ -11,10 +9,10 @@ interface Recipe {
     servings?: number;
 }
 
-interface Ingredient {
-  id?: number;
-  name: string;
-}
+// interface Ingredient {
+//   id?: number;
+//   name: string;
+// }
 
 interface RecipeIngredientDetail{
   id?: number;
@@ -23,48 +21,42 @@ interface RecipeIngredientDetail{
   quantity: string;
 }
 
-interface RecipeIngredient{
-  recipeId: number;
-  ingredientId: number;
-  quantity: number;
-  quantifier: string;
-}
 
-export const createRecipe = async (recipe: Recipe) => {
-    const db = getDb();
-  const result = await db.run(
-    'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?);',
-    recipe.name,
-    recipe.timeToPrepare,
-    recipe.instructions,
-    recipe.servings
-  );
-  return {
-    id: result.lastID,
-    name: recipe.name,
-    timeToPrepare: recipe.timeToPrepare,
-    instructions: recipe.instructions,
-    servings: recipe.servings
-  } 
-}
+// export const createRecipe = async (recipe: Recipe) => {
+//     const db = getDb();
+//   const result = await db.run(
+//     'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?);',
+//     recipe.name,
+//     recipe.timeToPrepare,
+//     recipe.instructions,
+//     recipe.servings
+//   );
+//   return {
+//     id: result.lastID,
+//     name: recipe.name,
+//     timeToPrepare: recipe.timeToPrepare,
+//     instructions: recipe.instructions,
+//     servings: recipe.servings
+//   } 
+// }
 
-export const addIngredient = async (ingredient: RecipeIngredient) => {
-  const db = getDb();
-  const result = await db.run(
-    `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
-     VALUES (?, ?, ?, ?);`,
-    ingredient.recipeId,
-    ingredient.ingredientId,
-    ingredient.quantity,
-    ingredient.quantifier
-    );
-    return {
-      recipeId: ingredient.recipeId,
-      ingredientId: ingredient.ingredientId,
-      quantity: ingredient.quantity,
-      quantifier: ingredient.quantifier
-    }
-}
+// export const addIngredient = async (ingredient: RecipeIngredient) => {
+//   const db = getDb();
+//   const result = await db.run(
+//     `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
+//      VALUES (?, ?, ?, ?);`,
+//     ingredient.recipeId,
+//     ingredient.ingredientId,
+//     ingredient.quantity,
+//     ingredient.quantifier
+//     );
+//     return {
+//       recipeId: ingredient.recipeId,
+//       ingredientId: ingredient.ingredientId,
+//       quantity: ingredient.quantity,
+//       quantifier: ingredient.quantifier
+//     }
+// }
 
 export const createRecipeWithIngredients = async (
   recipe: Recipe,
@@ -140,9 +132,9 @@ export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngred
           WHERE ri.recipe_id = ?;`, id);
 }
 
-export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
-  const db = getDb();
-  return db.get(`SELECT id, name
-                FROM Ingredients
-                WHERE name = ?;`, name);
-}
+// export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
+//   const db = getDb();
+//   return db.get(`SELECT id, name
+//                 FROM Ingredients
+//                 WHERE name = ?;`, name);
+// }

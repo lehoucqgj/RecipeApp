@@ -1,6 +1,5 @@
 import express from 'express';
-import { createRecipe, createRecipeWithIngredients, addIngredient, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName } from '../db/queries.js';
-import { json } from 'stream/consumers';
+import { createRecipeWithIngredients, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId } from '../db/queries.js';
 
 const router = express.Router();
 
@@ -10,25 +9,25 @@ router.get('/', (req, res) => {
 
 //TODO: implement error handling middleware
 
-router.post('/recipes', async (req, res, next) => {
-  const { name, timeToPrepare, instructions, servings } = req.body;
-  try {
-    const newRecipe = await createRecipe({name, timeToPrepare, instructions, servings});
-    res.status(201).json(newRecipe);
-  } catch (err) {
-    next(err);
-  }
-});
+// router.post('/recipes', async (req, res, next) => {
+//   const { name, timeToPrepare, instructions, servings } = req.body;
+//   try {
+//     const newRecipe = await createRecipe({name, timeToPrepare, instructions, servings});
+//     res.status(201).json(newRecipe);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
-router.post('/recipes/ingredient', async (req, res, next) =>{
-  try{
-    const { recipeId, ingredientId, quantity, quantifier } = req.body;
-    const newRecipeIngredient = await addIngredient({recipeId, ingredientId, quantity, quantifier});
-    res.status(201).json(newRecipeIngredient);
-  } catch(err){
-    next(err);
-  }
-});
+// router.post('/recipes/ingredient', async (req, res, next) =>{
+//   try{
+//     const { recipeId, ingredientId, quantity, quantifier } = req.body;
+//     const newRecipeIngredient = await addIngredient({recipeId, ingredientId, quantity, quantifier});
+//     res.status(201).json(newRecipeIngredient);
+//   } catch(err){
+//     next(err);
+//   }
+// });
 
 router.post('recipes/with-ingredients', async (req, res, next) => {
   const {recipe, ingredients} = req.body;
@@ -83,14 +82,14 @@ router.get('/recipes/:id/ingredients', async (req, res) =>{
   }
 });
 
-router.get('/ingredient/:name', async (req, res) =>{
-  const ingredientName = req.params.name;
-  try{
-    const ingredient = await getIngredientByName(ingredientName);
-    res.json(ingredient);
-  } catch{
-    console.log("error getting ingredient with that name");
-  }
-});
+// router.get('/ingredient/:name', async (req, res) =>{
+//   const ingredientName = req.params.name;
+//   try{
+//     const ingredient = await getIngredientByName(ingredientName);
+//     res.json(ingredient);
+//   } catch{
+//     console.log("error getting ingredient with that name");
+//   }
+// });
 
-export default router;
+// export default router;

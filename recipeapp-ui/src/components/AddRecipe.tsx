@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { type Ingredient, type Recipe, type RecipeIngredient, type RecipeIngredientInput } from "../types"
+import { type Recipe, type RecipeIngredientInput } from "../types"
 import { recipeApi } from "../services/api";
 
 export const AddRecipe = () => {   
@@ -51,24 +51,9 @@ export const AddRecipe = () => {
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        //TODO: move stuff to backend so i can use a transaction of sorts.
         try{
             setLoading(true);
             setError(null);
-            // pre transaction code
-            // const newRecipe = await recipeApi.createRecipe(recipeFormData);
-            // for (const ingr of ingredientList){
-            //     const ingredient = await recipeApi.getIngredientByName(ingr.name);
-            //     const ingredientToAdd: RecipeIngredient = {
-            //         //TODO: doublecheck if the 'trustmebro !' wont give problems.
-            //         // or you know, validate data.
-            //         recipeId: newRecipe.id!, 
-            //         ingredientId: ingredient.id!, 
-            //         quantity: ingredientsFormData.quantity, 
-            //         quantifier: ingredientsFormData.quantifier}
-            //     console.log(ingredientToAdd)
-            //     await recipeApi.addRecipeIngredient(ingredientToAdd);
-            // }
             const ingredients = ingredientList.map(ingr => ({
                 name: ingr.name,
                 quantity: ingr.quantity,
