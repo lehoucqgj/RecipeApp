@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 //   }
 // });
 
-router.post('recipes/with-ingredients', async (req, res, next) => {
+router.post('/recipes/with-ingredients', async (req, res, next) => {
   const {recipe, ingredients} = req.body;
   try{
     const newRecipe = await createRecipeWithIngredients(recipe, ingredients);
@@ -92,4 +92,4 @@ router.get('/recipes/:id/ingredients', async (req, res) =>{
 //   }
 // });
 
-// export default router;
+export default router;

@@ -85,7 +85,7 @@ export const createRecipeWithIngredients = async (
         throw new Error(`Ingredient ${ingr.name} not found!`);
       }
       await db.run(
-        'INSERT INTO RecipeIngredient (recipe_id, ingredient_id, quantity, quantifier) VALUES(?, ?, ?, ?)',
+        'INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier) VALUES(?, ?, ?, ?)',
         recipeId,
         ingredient.id,
         ingr.quantity,
