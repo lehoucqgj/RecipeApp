@@ -84,9 +84,7 @@ export const AddRecipe = () => {
         } finally {
             (setLoading(false))
         }
-
     }
-
 
     const AddIngredient = () => {
         setError(null);
