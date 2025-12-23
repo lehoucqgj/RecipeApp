@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { type Ingredient, type Recipe, type RecipeIngredient, type RecipeIngredientInputDto } from "../types"
+import { type Ingredient, type Recipe, type RecipeIngredient, type RecipeIngredientInput } from "../types"
 import { recipeApi } from "../services/api";
 
 export const AddRecipe = () => {   
@@ -9,7 +9,7 @@ export const AddRecipe = () => {
         instructions: '',
         servings: 0
     });
-    const [ingredientsFormData, setIngredientsFormData] = useState<RecipeIngredientInputDto>({
+    const [ingredientsFormData, setIngredientsFormData] = useState<RecipeIngredientInput>({
         name: '',
         quantity: 0,
         quantifier: ''
@@ -20,7 +20,7 @@ export const AddRecipe = () => {
     
     const [step, setStep] = useState(1);
     
-    const [ingredientList, setIngredientList] = useState<RecipeIngredientInputDto[]>([]);
+    const [ingredientList, setIngredientList] = useState<RecipeIngredientInput[]>([]);
     
     // TODO: check out to change stepstate stuff to components.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,19 +55,29 @@ export const AddRecipe = () => {
         try{
             setLoading(true);
             setError(null);
-            const newRecipe = await recipeApi.createRecipe(recipeFormData);
-            for (const ingr of ingredientList){
-                const ingredient = await recipeApi.getIngredientByName(ingr.name);
-                const ingredientToAdd: RecipeIngredient = {
-                    //TODO: doublecheck if the 'trustmebro !' wont give problems.
-                    // or you know, validate data.
-                    recipeId: newRecipe.id!, 
-                    ingredientId: ingredient.id!, 
-                    quantity: ingredientsFormData.quantity, 
-                    quantifier: ingredientsFormData.quantifier}
-                console.log(ingredientToAdd)
-                await recipeApi.addRecipeIngredient(ingredientToAdd);
-            }
+            // pre transaction code
+            // const newRecipe = await recipeApi.createRecipe(recipeFormData);
+            // for (const ingr of ingredientList){
+            //     const ingredient = await recipeApi.getIngredientByName(ingr.name);
+            //     const ingredientToAdd: RecipeIngredient = {
+            //         //TODO: doublecheck if the 'trustmebro !' wont give problems.
+            //         // or you know, validate data.
+            //         recipeId: newRecipe.id!, 
+            //         ingredientId: ingredient.id!, 
+            //         quantity: ingredientsFormData.quantity, 
+            //         quantifier: ingredientsFormData.quantifier}
+            //     console.log(ingredientToAdd)
+            //     await recipeApi.addRecipeIngredient(ingredientToAdd);
+            // }
+            const ingredients = ingredientList.map(ingr => ({
+                name: ingr.name,
+                quantity: ingr.quantity,
+                quantifier: ingr.quantifier
+            }));
+            await recipeApi.createRecipeWithIngredients({
+                recipe: recipeFormData,
+                ingredients: ingredients
+            })
         } catch(err) {
             setError("Failed to create Recipe");
             console.log(err);

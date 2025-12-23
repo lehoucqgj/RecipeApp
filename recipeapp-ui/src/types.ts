@@ -13,7 +13,8 @@ export interface RecipeIngredient {
     quantifier: string;
 }
 
-export interface RecipeIngredientInputDto {
+// this one can go after refactor i think.
+export interface RecipeIngredientInput {
     name: string;
     quantity: number;
     quantifier: string;
@@ -30,4 +31,9 @@ export interface RecipeIngredientDetails {
 export interface Ingredient {
     id?: number;
     name: string;
+}
+
+export interface createRecipeWithIngredientsData {
+    recipe: Recipe
+    ingredients: RecipeIngredientDetails[]; 
 }

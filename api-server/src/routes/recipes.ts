@@ -1,5 +1,6 @@
 import express from 'express';
-import { createRecipe, addIngredient, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName } from '../db/queries.js';
+import { createRecipe, createRecipeWithIngredients, addIngredient, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName } from '../db/queries.js';
+import { json } from 'stream/consumers';
 
 const router = express.Router();
 
@@ -24,6 +25,16 @@ router.post('/recipes/ingredient', async (req, res, next) =>{
     const { recipeId, ingredientId, quantity, quantifier } = req.body;
     const newRecipeIngredient = await addIngredient({recipeId, ingredientId, quantity, quantifier});
     res.status(201).json(newRecipeIngredient);
+  } catch(err){
+    next(err);
+  }
+});
+
+router.post('recipes/with-ingredients', async (req, res, next) => {
+  const {recipe, ingredients} = req.body;
+  try{
+    const newRecipe = await createRecipeWithIngredients(recipe, ingredients);
+    res.status(201).json(newRecipe);
   } catch(err){
     next(err);
   }

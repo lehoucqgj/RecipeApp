@@ -68,19 +68,54 @@ export const addIngredient = async (ingredient: RecipeIngredient) => {
 
 export const createRecipeWithIngredients = async (
   recipe: Recipe,
-  ingredient: Array<{name: string, quantity: number, quantifier: string}>
-) => {
+  ingredients: Array<{name: string, quantity: number, quantifier: string}> ) => {
   const db = getDb();
-
-  return new Promise((resolve, reject) => {
-    db.run('BEGIN TRANSACTION');
-
-    db.run(
+  
+  try{
+    await db.run('BEGIN TRANSACTION');
+    
+    const result = await db.run(
       'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?)',
-      [recipe.name, recipe.timeToPrepare, recipe.instructions, recipe.servings]
-    )
-  });
-}
+      recipe.name, 
+      recipe.timeToPrepare, 
+      recipe.instructions, 
+      recipe.servings
+    );
+    
+    const recipeId = result.lastID;
+
+    for (const ingr of ingredients){
+      const ingredient = await db.get(
+        'SELECT * FROM Ingredients WHERE name = ?',
+        ingr.name
+      );
+      if (!ingredient){
+        throw new Error(`Ingredient ${ingr.name} not found!`);
+      }
+      await db.run(
+        'INSERT INTO RecipeIngredient (recipe_id, ingredient_id, quantity, quantifier) VALUES(?, ?, ?, ?)',
+        recipeId,
+        ingredient.id,
+        ingr.quantity,
+        ingr.quantifier
+      );
+    }
+
+    await db.run('COMMIT');
+
+    return{
+      id: recipeId,
+      name: recipe.name,
+      timeToPrepare: recipe.timeToPrepare,
+      instructions: recipe.instructions,
+      servings: recipe.servings
+    }
+
+    } catch(err) {
+      await db.run('ROLLBACK');
+      throw err;
+    }
+  }
 
 export const getAllRecipes = async (): Promise<Recipe[]> =>{
     const db = getDb();
