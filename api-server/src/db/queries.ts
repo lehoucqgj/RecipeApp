@@ -14,8 +14,8 @@ interface Recipe {
 // }
 
 interface RecipeIngredientDetail{
-  id?: number;
-  recipeId: number;
+  recipeId?: number;
+  ingredientId?: number;
   name: string;
   quantity: string;
 }
@@ -125,7 +125,7 @@ export const deleteRecipeById = async (id: number): Promise<void> => {
 
 export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngredientDetail[] | undefined> => {
   const db = getDb();
-  return db.all(`SELECT i.name, ri.quantity, ri.recipe_id
+  return db.all(`SELECT i.id as ingredientId, ri.recipe_id as recipeId, i.name, ri.quantity
           FROM RecipeIngredients ri
           JOIN Ingredients i on ri.ingredient_id = i.id 
           WHERE ri.recipe_id = ?;`, id);
