@@ -6,23 +6,22 @@ export interface Recipe {
     servings?: number;
 }
 
-export interface RecipeIngredient {
-    recipeId: number;
-    ingredientId: number;
-    quantity: number;
-    quantifier: string;
-}
+// export interface RecipeIngredient {
+//     recipeId: number;
+//     ingredientId: number;
+//     quantity: number;
+//     quantifier: string;
+// }
 
-// this one can go after refactor i think.
 export interface RecipeIngredientInput {
     name: string;
     quantity: number;
     quantifier: string;
 }
 
-//TODO: used in RecipeList component, check if one of the other types can be used.
 export interface RecipeIngredientDetails {
-    id?: number;
+    recipeId?: number;
+    ingredientId?: number;
     name: string;
     quantity: number;
     quantifier: string;

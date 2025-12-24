@@ -60,9 +60,17 @@ export const RecipeList = () => {
     }
 
     const addBtnClick = async (id: number) => {
-      //TODO: Write validation to check for duplicate recipes
-        const data = await recipeApi.getAllRecipeIngredients(id);
-        setShoppinglist(prev => [...prev, ...data]);
+      const containsRecipe = shoppinglist.some(item => item.recipeId === id);
+      if (containsRecipe){
+        console.warn(`Recipe already in the weekmenu.`);
+        return;
+      }
+      const data = await recipeApi.getAllRecipeIngredients(id);
+      const ingredientWithRecipeId = data.map(ingr => ({
+        ...ingr,
+        recipeId: id
+      }));
+      setShoppinglist(prev => [...prev, ...ingredientWithRecipeId]);
     }
 
 return (
@@ -85,7 +93,7 @@ return (
               <p>Ingredients for {r.name}:</p>
               <ul>
                 {ingredients.map (ingr => (
-                  <li key={`${ingr.id}-${r.id}`}>
+                  <li key={`${r.id}-${ingr.ingredientId}`}>
                     {ingr.name}: {ingr.quantity} {ingr.quantifier}
                   </li>
                 ))}
