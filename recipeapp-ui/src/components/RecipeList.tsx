@@ -93,7 +93,8 @@ return (
               <p>Ingredients for {r.name}:</p>
               <ul>
                 {ingredients.map(ingr => {
-                  console.log(ingr); // See what properties it actually has
+                  // checking up on them dataz.
+                  console.log(ingr);
                   console.log(`${ingr.ingredientId}${ingr.recipeId}`);
                   return (
                     <li key={`${ingr.ingredientId}${r.id}`}>
