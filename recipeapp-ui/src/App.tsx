@@ -7,23 +7,21 @@ import { Home } from './components/Home'
 import { RecipeList } from './components/RecipeList'
 import { SchoppingList as ShoppingList } from './components/ShoppingList'
 import { AddRecipe } from './components/AddRecipe'
-import type { Recipe } from './types'
+import type { RecipeIngredientDetails, Recipe } from './types'
 
-function App() {
-  // const [refreshKey, setRefreshKey] = useState(0);
-
-  // const handleRecipeCreated = (recipe: Recipe) => {
-  //   console.log("recipe created: ", recipe);
-  //   setRefreshKey(prev => prev +1 );
-  // }
-  
+function App() {  
+  const [shoppinglist, setShoppinglist] = useState<RecipeIngredientDetails[]>([]);
   return (
     <>
       <NavBar/>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/RecipeList' element={<RecipeList />} />
-        <Route path='/ShoppingList' element={<ShoppingList />} />
+        <Route 
+          path='/RecipeList' 
+          element={<RecipeList shoppinglist={shoppinglist} setShoppinglist={setShoppinglist}/>} />
+        <Route 
+          path='/ShoppingList' 
+          element={<ShoppingList items={shoppinglist}/>} />
         <Route path='/AddRecipe' element={<AddRecipe/>} />
       </Routes>
     </>

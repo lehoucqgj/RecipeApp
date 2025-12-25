@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { type RecipeIngredientDetails, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
-
-export const RecipeList = () => {
+interface RecipeListProps{
+  shoppinglist: RecipeIngredientDetails[];
+  setShoppinglist: React.Dispatch<React.SetStateAction<RecipeIngredientDetails[]>>
+}
+export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: RecipeListProps) => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<RecipeIngredientDetails[]>([]);
     const [expandedRecipeId, setExpandedRecipeId] = useState<number | null>(null);
-    const [shoppinglist, setShoppinglist] = useState<RecipeIngredientDetails[]>([]);
+    //const [shoppinglist, setShoppinglist] = useState<RecipeIngredientDetails[]>([]);
+    const [recipeCount, setRecipeCount] = useState(0);
 
     useEffect(() => {
         // show all recipes on site load.
@@ -61,8 +65,13 @@ export const RecipeList = () => {
 
     const addBtnClick = async (id: number) => {
       const containsRecipe = shoppinglist.some(item => item.recipeId === id);
+      //TODO: Give a warning to the user to, not just the console.
       if (containsRecipe){
         console.warn(`Recipe already in the weekmenu.`);
+        return;
+      }
+      if (recipeCount >= 7){
+        console.warn('You already selected 7 recipes');
         return;
       }
       const data = await recipeApi.getAllRecipeIngredients(id);
@@ -71,6 +80,7 @@ export const RecipeList = () => {
         recipeId: id
       }));
       setShoppinglist(prev => [...prev, ...ingredientWithRecipeId]);
+      setRecipeCount(recipeCount + 1);
     }
 
 return (
