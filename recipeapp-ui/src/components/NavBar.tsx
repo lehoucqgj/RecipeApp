@@ -11,13 +11,13 @@ export const NavBar = () => {
 
     return (
         <nav>
-            <div className="container flex items-center justify-center p-6 mx-auto text-[#dbbc74]">
+            <div className="container flex items-center justify-center p-6 mx-auto text-[#fafafa]">
                 {links.map(link =>(
                     <p  key={link.to}
                         className={`border-b-2 mx-1.5 sm:mx-6 ${
                             location.pathname === link.to
-                                ? "text-[#dbbc74] border-[#9E0031]"
-                                : "border-transparent hover:text-[#e0ca96] hover:border-[#9E0031]"
+                                ? "text-[#e6f2f1] border-[#0f766e]"
+                                : "border-transparent hover:text-[#e3e5e5] hover:border-[#0f766e]"
                         }`}>
                         <Link to={link.to}>{link.label}</Link>
                     </p>
