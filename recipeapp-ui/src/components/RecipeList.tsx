@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { type RecipeIngredientDetails, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
+
 interface RecipeListProps{
   shoppinglist: RecipeIngredientDetails[];
   setShoppinglist: React.Dispatch<React.SetStateAction<RecipeIngredientDetails[]>>
 }
+
 export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: RecipeListProps) => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<RecipeIngredientDetails[]>([]);
     const [expandedRecipeId, setExpandedRecipeId] = useState<number | null>(null);
-    //const [shoppinglist, setShoppinglist] = useState<RecipeIngredientDetails[]>([]);
     const [recipeCount, setRecipeCount] = useState(0);
 
     useEffect(() => {

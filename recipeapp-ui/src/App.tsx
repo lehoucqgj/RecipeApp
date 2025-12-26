@@ -7,6 +7,8 @@ import { Home } from './components/Home'
 import { RecipeList } from './components/RecipeList'
 import { SchoppingList as ShoppingList } from './components/ShoppingList'
 import { AddRecipe } from './components/AddRecipe'
+import { RecipeComponent } from './components/RecipeComponent'
+
 import type { RecipeIngredientDetails, Recipe } from './types'
 
 function App() {  
@@ -15,7 +17,7 @@ function App() {
     <>
       <NavBar/>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<RecipeComponent />} />
         <Route 
           path='/RecipeList' 
           element={<RecipeList shoppinglist={shoppinglist} setShoppinglist={setShoppinglist}/>} />
