@@ -3,3 +3,5 @@ bg: 1e2939
 border nav: 9E0031
 
 navbar text: dbbc74
+
+navbar green border: 0f766e

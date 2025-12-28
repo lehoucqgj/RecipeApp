@@ -1,24 +1,54 @@
+import { type Recipe, type RecipeIngredientDetails } from "../types";
 
+interface RecipeCoponentProps{
+    recipe: Recipe;
+    ingredients: RecipeIngredientDetails[];
+    isExpanded: boolean;
+    onRecipeClick: (id: number) => void;
+    onAddClick: (id: number) => void;
+}
 
-export const RecipeComponent = () => {
-    const pinkClass = "text-[#e3e5e5]";
+export const RecipeComponent = ({
+    recipe,
+    ingredients,
+    isExpanded,
+    onRecipeClick,
+    onAddClick }: RecipeCoponentProps) => {
     return (
-        <>
             <div className="m-2 p-1 w-1/2 border rounded-xl border-[#121918] bg-[#242b38]">
-                <p className="pb-1 font-bold text-fuchsia-800 border-b border-[#121918]">Everzwijnragout</p>
-                <p className={pinkClass}>uitleg</p>
-                <p className={pinkClass}>nog wa uitleg</p>
-                <div className="container flex  justify-center my-2 border-t border-[#121918]">
-                    <ul className="flex-1 text-center text-[#e3e5e5]">
-                        <li>patat</li>
-                        <li>tonijn</li>
-                    </ul>
-                    <ul className="flex-1 text-center text-[#e3e5e5]">
-                        <li>5</li>
-                        <li>1 kg</li>
-                    </ul>
+            {/*clickable thingy*/}
+                <div
+                    className="pb-1 font-bold cursor-pointer text-[#e6f2f1] border-b border-[#121918]"
+                    onClick={() => recipe.id && onRecipeClick(recipe.id)}
+                >
+                    {recipe.name} {recipe.timeToPrepare && ` - ${recipe.timeToPrepare}`}
                 </div>
-            </div>
-        </>
+
+                { isExpanded && (
+                    <>
+                    <div className="container flex justify-center my-2 border-t border-[#121918] pt-2">
+                        <ul className="flex-1 text-center text-[#e3e5e5]">
+                            {ingredients.map(ingr => (
+                                <li key={`${ingr.ingredientId}-${recipe.id}`}>
+                                {ingr.name} - {ingr.quantity} {ingr.quantifier}
+                            </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <button 
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if(recipe.id){
+                                onAddClick(recipe.id);
+                            }
+                        }}
+                        >Add
+                </button>
+                </>
+            )}
+        </div>
     )
 }
+            

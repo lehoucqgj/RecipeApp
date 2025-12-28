@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { type RecipeIngredientDetails, type Recipe } from "../types";
 import { recipeApi } from "../services/api";
+import { RecipeComponent } from "./RecipeComponent";
 
 interface RecipeListProps{
   shoppinglist: RecipeIngredientDetails[];
@@ -85,44 +86,59 @@ export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: Reci
     }
 
 return (
-  <div className="text-gray-300">
-    <h2 className="my-1 text-3xl">Recipes</h2>
-    <ul>
-      {recipes.map(r => (
-        <li key={r.id}>
-          {/* recipe name*/}
-          <div 
-            onClick={() => r.id && handleRecipeClick(r.id)}
-            className="cursor-pointer hover:bg-blue-700 p-2"
-          >
-            {r.name} - {r.timeToPrepare}
-          </div>
+  // <div className="text-gray-300">
+  //   <h2 className="my-1 text-3xl">Recipes</h2>
+  //   <ul>
+  //     {recipes.map(r => (
+  //       <li key={r.id}>
+  //         {/* recipe name*/}
+  //         <div 
+  //           onClick={() => r.id && handleRecipeClick(r.id)}
+  //           className="cursor-pointer hover:bg-blue-700 p-2"
+  //         >
+  //           {r.name} - {r.timeToPrepare}
+  //         </div>
           
-          {/* details */}
-          {r.id && expandedRecipeId === r.id && (
-            <div className="ml-4 mt-2 p-2 bg-gray-800">
-              <p>Ingredients for {r.name}:</p>
-              <ul>
-                {ingredients.map(ingr => {
-                  // checking up on them dataz.
-                  console.log(ingr);
-                  console.log(`${ingr.ingredientId}${ingr.recipeId}`);
-                  return (
-                    <li key={`${ingr.ingredientId}${r.id}`}>
-                      {ingr.name}: {ingr.quantity} {ingr.quantifier}
-                    </li>
-                  );
-                })}
-              </ul>
-              <button 
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => r.id && addBtnClick(r.id)}>Add</button>
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
-  </div>
+  //         {/* details */}
+  //         {r.id && expandedRecipeId === r.id && (
+  //           <div className="ml-4 mt-2 p-2 bg-gray-800">
+  //             <p>Ingredients for {r.name}:</p>
+  //             <ul>
+  //               {ingredients.map(ingr => {
+  //                 // checking up on them dataz.
+  //                 console.log(ingr);
+  //                 console.log(`${ingr.ingredientId}${ingr.recipeId}`);
+  //                 return (
+  //                   <li key={`${ingr.ingredientId}${r.id}`}>
+  //                     {ingr.name}: {ingr.quantity} {ingr.quantifier}
+  //                   </li>
+  //                 );
+  //               })}
+  //             </ul>
+  //             <button 
+  //               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+  //               onClick={() => r.id && addBtnClick(r.id)}>Add</button>
+  //           </div>
+  //         )}
+  //       </li>
+  //     ))}
+  //   </ul>
+  // </div>
+  <div className="text-gray-300">
+      <h2 className="my-1 text-3xl">Recipes</h2>
+      <div>
+        {recipes.map(r => (
+          <RecipeComponent
+            key={r.id}
+            recipe={r}
+            ingredients={r.id === expandedRecipeId ? ingredients : []}
+            isExpanded={r.id === expandedRecipeId}
+            onRecipeClick={handleRecipeClick}
+            onAddClick={addBtnClick}
+          />
+        ))}
+      </div>
+    </div>
 );
 
 

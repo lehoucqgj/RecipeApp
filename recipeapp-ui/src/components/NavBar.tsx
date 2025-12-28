@@ -16,8 +16,8 @@ export const NavBar = () => {
                     <p  key={link.to}
                         className={`border-b-2 mx-1.5 sm:mx-6 ${
                             location.pathname === link.to
-                                ? "text-[#e6f2f1] border-[#0f766e]"
-                                : "border-transparent hover:text-[#e3e5e5] hover:border-[#0f766e]"
+                                ? "text-[#e6f2f1] border-fuchsia-800"
+                                : "border-transparent hover:text-[#e3e5e5] hover:border-fuchsia-800"
                         }`}>
                         <Link to={link.to}>{link.label}</Link>
                     </p>
