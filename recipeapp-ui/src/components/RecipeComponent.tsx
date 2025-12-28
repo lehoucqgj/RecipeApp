@@ -15,7 +15,7 @@ export const RecipeComponent = ({
     onRecipeClick,
     onAddClick }: RecipeCoponentProps) => {
     return (
-            <div className="m-2 p-1 w-1/2 border rounded-xl border-[#121918] bg-[#242b38]">
+            <div className="m-2 p-1 border rounded-xl border-[#121918] bg-[#242b38] self-start">
             {/*clickable thingy*/}
                 <div
                     className="pb-1 font-bold cursor-pointer text-[#e6f2f1] border-b border-[#121918]"

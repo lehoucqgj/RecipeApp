@@ -17,7 +17,8 @@ interface RecipeIngredientDetail{
   recipeId?: number;
   ingredientId?: number;
   name: string;
-  quantity: string;
+  quantity: number;
+  quantifier: string;
 }
 
 
@@ -125,15 +126,16 @@ export const deleteRecipeById = async (id: number): Promise<void> => {
 
 export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngredientDetail[] | undefined> => {
   const db = getDb();
-  const results = db.all(`SELECT i.id as ingredientId, ri.recipe_id as recipeId, i.name, ri.quantity
+  
+  return db.all(`SELECT i.id as ingredientId, ri.recipe_id as recipeId, i.name, ri.quantity, ri.quantifier
           FROM RecipeIngredients ri
           JOIN Ingredients i on ri.ingredient_id = i.id 
           WHERE ri.recipe_id = ?;`, id);
           
-  return (await results).map(row => ({
-    ...row,
-    quantity: Number(row.quantity)
-  }));
+  // return (await results).map(row => ({
+  //   ...row,
+  //   quantity: Number(row.quantity)
+  // }));
 }
 
 // export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
