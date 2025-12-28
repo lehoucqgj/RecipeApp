@@ -86,9 +86,9 @@ export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: Reci
     }
 
 return (
-  <div className="text-gray-300">
-      <h2 className="my-1 text-3xl mb-4">Recipes</h2>
-      <div className="grid grid-cols-2 gap-4 ">
+  <div>
+      <h2 className="my-1 text-3xl mb-10 border-b border-fuchsia-800 pb-4 text-[#fafafa]">Recipes</h2>
+      <div className="grid grid-cols-2 gap-4">
         {recipes.map(r => (
           <RecipeComponent
             key={r.id}

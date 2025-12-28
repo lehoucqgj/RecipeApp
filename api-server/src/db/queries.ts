@@ -8,11 +8,6 @@ interface Recipe {
     servings?: number;
 }
 
-// interface Ingredient {
-//   id?: number;
-//   name: string;
-// }
-
 interface RecipeIngredientDetail{
   recipeId?: number;
   ingredientId?: number;
@@ -131,11 +126,6 @@ export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngred
           FROM RecipeIngredients ri
           JOIN Ingredients i on ri.ingredient_id = i.id 
           WHERE ri.recipe_id = ?;`, id);
-          
-  // return (await results).map(row => ({
-  //   ...row,
-  //   quantity: Number(row.quantity)
-  // }));
 }
 
 // export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {

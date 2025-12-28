@@ -11,7 +11,7 @@ export const NavBar = () => {
 
     return (
         <nav>
-            <div className="container flex items-center justify-center p-6 mx-auto text-[#fafafa]">
+            <div className="container flex items-center justify-center p-6 mx-auto text-[#fafafa] text-2xl mb-2">
                 {links.map(link =>(
                     <p  key={link.to}
                         className={`border-b-2 mx-1.5 sm:mx-6 ${

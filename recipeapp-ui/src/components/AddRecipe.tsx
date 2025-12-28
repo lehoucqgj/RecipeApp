@@ -91,7 +91,7 @@ export const AddRecipe = () => {
 
     return (
         <>
-            <h1>Here you can add new recipes to your cookbook</h1>
+            <h1 className="text-[#fafafa] my-1 text-3xl mb-10 border-b border-fuchsia-800 pb-4">Here you can add new recipes to your cookbook</h1>
             {step === 1 && (
                 <form>
                 <h2>Add Recipe</h2>
