@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { type Recipe, type RecipeIngredientInput } from "../types"
 import { recipeApi } from "../services/api";
 
+const inputRowStyle = "flex flex-row justify-center my-2 " 
+const inputBoxStyle = "flex-1 border border-gray-700 px-1.5 rounded-md"
+
 export const AddRecipe = () => {   
     const [recipeFormData, setRecipeFormData] = useState<Recipe>({
         name: '',
@@ -23,7 +26,8 @@ export const AddRecipe = () => {
     const [ingredientList, setIngredientList] = useState<RecipeIngredientInput[]>([]);
     
     // TODO: check out to change stepstate stuff to components.
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO: add other component or stepstate for adding ingredient to the database. (should really look into multiple components and refactor)
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
         if (step === 1){
             setRecipeFormData(prev => ({
@@ -89,49 +93,67 @@ export const AddRecipe = () => {
         console.log(ingredientList);
     }, [ingredientList]);
 
+
     return (
+        
         <>
             <h1 className="text-[#fafafa] my-1 text-3xl mb-10 border-b border-fuchsia-800 pb-4">Here you can add new recipes to your cookbook</h1>
             {step === 1 && (
                 <form>
-                <h2>Add Recipe</h2>
+                <h2 className="text-xl mb-6 text-[#fafafa]" >Add Recipe</h2>
                 {error && <div className="text-red-700">{error}</div>}
-                <div className="flex flex-col w-2/5 mx-auto">
-                    <input 
-                        type="text"
-                        name="name"
-                        value={recipeFormData.name}
-                        onChange={handleChange}
-                        placeholder="Name"
-                        required
-                        />
-                    <input 
-                        type="number"
-                        name="timeToPrepare"
-                        value={recipeFormData.timeToPrepare}
-                        onChange={handleChange}
-                        placeholder="0"
-                        required
-                        />
-                    <input
-                    //TODO: Make this textfield bigger and allow return, so you can write it down structured
-                    // or add a 'next instruction button'
-                        type="text"
-                        name="instructions"
-                        value={recipeFormData.instructions}
-                        onChange={handleChange}
-                        placeholder="Instructions"
-                        />
-                    <input 
-                        type="number"
-                        name="servings"
-                        value={recipeFormData.servings}
-                        onChange={handleChange}
-                        placeholder="0"
-                        />
+                <div className="flex flex-col w-2/5 mx-auto text-[#fafafa]">
+                    <div className={inputRowStyle}>
+                        <label className="flex-1">Recipe Name:</label>
+                        <input 
+                            type="text"
+                            name="name"
+                            value={recipeFormData.name}
+                            onChange={handleChange}
+                            placeholder="Name"
+                            required
+                            className={inputBoxStyle}
+                            />
+                    </div>
+                    <div className={inputRowStyle}>
+                        <label className="flex-1">Time to prepare: </label>
+                        <input 
+                            type="number"
+                            name="timeToPrepare"
+                            value={recipeFormData.timeToPrepare}
+                            onChange={handleChange}
+                            placeholder="0"
+                            required
+                            className={inputBoxStyle}
+                            />
+                    </div>
+
+                    <div className={inputRowStyle}>
+                        <label className="flex-1">Instructions: </label>
+                        <textarea
+                            name="instructions"
+                            value={recipeFormData.instructions}
+                            onChange={handleChange}
+                            placeholder="Instructions"
+                            rows={5}
+                            className={inputBoxStyle}
+                            />
+                    </div>
+
+                    <div className={inputRowStyle}>
+                        <label className="flex-1">Servings: </label>
+                        <input 
+                            type="number"
+                            name="servings"
+                            value={recipeFormData.servings}
+                            onChange={handleChange}
+                            placeholder="0"
+                            className={inputBoxStyle}
+                            />
+                    </div>
 
                     <button type="button" disabled={loading}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-3/4 mx-auto mt-6"
                         onClick={createRecipe}>
                         Next: Add ingredients
                     </button>
