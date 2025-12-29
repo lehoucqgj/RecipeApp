@@ -7,10 +7,11 @@ interface ShoppingListProps {
 export const SchoppingList = ({ items }: ShoppingListProps) => {
     const groupIngredients = (items: RecipeIngredientDetails[]) => {
         const grouped = items.reduce((acc, item) => {
-            if(!acc[item.name]){
-                acc[item.name] = {...item};
+            const key = `${item.name}-${item.quantifier}`;
+            if(!acc[key]){
+                acc[key] = {...item};
             } else {
-                acc[item.name].quantity += item.quantity;
+                acc[key].quantity += item.quantity;
             }
             return acc;
         }, {} as Record<string, RecipeIngredientDetails>);
@@ -21,15 +22,15 @@ export const SchoppingList = ({ items }: ShoppingListProps) => {
 
     return (
         <>
-            <h1>Your shopping list for this week</h1>
+            <h1 className="my-1 text-3xl mb-10 border-b border-fuchsia-800 pb-4 text-[#fafafa]">Your shopping list for this week</h1>
             <div>
                 {items.length === 0? (
-                    <p>No items in your shoppinglist.</p>
+                    <p className="text-[#fafafa]">No items in your shoppinglist.</p>
                 ) : (
-                    <ul>
+                    <ul className="text-[#fafafa]">
                         {groupedIngredients.map((item) => (
                             <li key={`${item.recipeId}-${item.ingredientId}`}>
-                                {item.name}: {item.quantity} {item.quantifier}
+                                - {item.name}: {item.quantity} {item.quantifier}
                             </li>
                         ))}
                     </ul>
