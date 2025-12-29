@@ -85,6 +85,7 @@ export const AddRecipe = () => {
             setError("Duplicate ingredient.");
             return
         }
+        //TODO: Check if the ingredient already exists in db, if not go to another form to add it.
         setIngredientList(prev => [...prev, ingredientsFormData]);
     }
 
@@ -164,52 +165,65 @@ export const AddRecipe = () => {
 
             {step === 2 &&(
                 <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col w-2/5 mx-auto">
-                        <h2>Add ingredients</h2>
-
-                        <input 
-                            type="text"
-                            name="name"
-                            value={ingredientsFormData.name}
-                            onChange={handleChange}
-                            placeholder="Name"
-                            required
+                    <div className="flex flex-col w-2/5 mx-auto text-[#fafafa]">
+                        <h2 className="text-xl mb-6 ">Add ingredients</h2>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Ingredient Name:</label>
+                            <input 
+                                type="text"
+                                name="name"
+                                value={ingredientsFormData.name}
+                                onChange={handleChange}
+                                placeholder="Name"
+                                className={inputBoxStyle}
+                                required
+                                />
+                        </div>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Quantity:</label>
+                            <input 
+                                type="number"
+                                name="quantity"
+                                value={ingredientsFormData.quantity}
+                                onChange={handleChange}
+                                placeholder="Quantity"
+                                className={inputBoxStyle}
+                                required
                         />
-                        <input 
-                            type="number"
-                            name="quantity"
-                            value={ingredientsFormData.quantity}
-                            onChange={handleChange}
-                            placeholder="Quantity"
-                            required
-                        />
-                        <input 
-                            type="text"
-                            name="quantifier"
-                            value={ingredientsFormData.quantifier}
-                            onChange={handleChange}
-                            placeholder="Quantifier"
-                            required
-                        />
-
+                        </div>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Quantifier:</label>
+                            <input 
+                                type="text"
+                                name="quantifier"
+                                value={ingredientsFormData.quantifier}
+                                onChange={handleChange}
+                                placeholder="Quantifier"
+                                className={inputBoxStyle}
+                                required
+                            />
+                        </div>
                         <div>
-                            <ul> List of selected ingredients
-                                {ingredientList.map (ingr => (
-                                    <li key={ingr.name}>
-                                        {ingr.name}: {ingr.quantity} {ingr.quantifier}
-                                    </li>
-                                ))}
-                            </ul>
+                            <p className="mt-1">List of selected ingredients:</p>
+                            <div className="border border-gray-700 rounded-md w-2/3 mx-auto my-2 p-1">
+                                <ul>
+                                    {ingredientList.map (ingr => (
+                                            <li className="" key={ingr.name}>
+                                                {ingr.name}: {ingr.quantity} {ingr.quantifier}
+                                            </li>
+                                    ))}
+                                </ul>
+                            </div>
                             {error && <div className="text-red-700">{error}</div>}
                             <button type="button" disabled={loading}
                                 onClick={AddIngredient}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2">
                                 Add Ingredient
                             </button>
                         </div>
 
                         <button type="submit" disabled={loading}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6 w-5/6 mx-auto">
                             {loading ? 'Creating...' : 'Create Recipe'}
                         </button>
                     </div>
