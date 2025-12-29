@@ -72,13 +72,13 @@ router.delete('/recipes/:id', async (req, res, next) => {
   }
 });
 
-router.get('/recipes/:id/ingredients', async (req, res) =>{
+router.get('/recipes/:id/ingredients', async (req, res, next) =>{
   const recipeId = parseInt(req.params.id as string);
   try{
     const ingredients = await getIngredientsByRecipeId(recipeId);
     res.json(ingredients);
   }catch(err){
-    console.log("error getting ingredients for this recipe");
+    next(err);
   }
 });
 
