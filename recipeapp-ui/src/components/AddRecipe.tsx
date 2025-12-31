@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { type Recipe, type RecipeIngredientInput } from "../types"
+import { type Ingredient, type Recipe, type RecipeIngredientInput } from "../types"
 import { recipeApi } from "../services/api";
 
 const inputRowStyle = "flex flex-row justify-center my-2 " 
@@ -17,6 +17,11 @@ export const AddRecipe = () => {
         quantity: 0,
         quantifier: ''
     });
+    const [newIngredientFormData, setNewIngredientFormData] = useState<Ingredient>({
+        name: '',
+        type: '',
+        season: ''
+    });
     
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -26,7 +31,6 @@ export const AddRecipe = () => {
     const [ingredientList, setIngredientList] = useState<RecipeIngredientInput[]>([]);
     
     // TODO: check out to change stepstate stuff to components.
-    // TODO: add other component or stepstate for adding ingredient to the database. (should really look into multiple components and refactor)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
         if (step === 1){
@@ -37,6 +41,12 @@ export const AddRecipe = () => {
         }
         else if (step === 2){
             setIngredientsFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+        else if (step === 3){
+            setNewIngredientFormData(prev => ({
                 ...prev,
                 [name]: value
             }));
@@ -66,7 +76,9 @@ export const AddRecipe = () => {
             await recipeApi.createRecipeWithIngredients({
                 recipe: recipeFormData,
                 ingredients: ingredients
-            })
+            });
+            // TODO: doublecheck this irl
+            setStep(1);
         } catch(err) {
             setError("Failed to create Recipe");
             console.log(err);
@@ -79,6 +91,7 @@ export const AddRecipe = () => {
         try {
             setLoading(true);
             setError(null);
+            await recipeApi.createIngredient(newIngredientFormData);
         } catch(err) {
             setError("Failed to create ingredient");
             console.log(err);            

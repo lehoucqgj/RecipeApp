@@ -24,9 +24,11 @@ async function post<T>(endpoint: string, data: unknown): Promise<T> {
 export const recipeApi = {
     getAllRecipes: () => get<Recipe[]>('/recipes'),
     getAllRecipeIngredients: (id: number) => get<RecipeIngredientDetails[]>(`/recipes/${id}/ingredients`),
-    createRecipe: (data: Recipe) => post<Recipe>('/recipes', data),
-
     getIngredientByName: (name: string) => get<Ingredient>(`/ingredient/${name}`),
+    
+    // createRecipe: (data: Recipe) => post<Recipe>('/recipes', data),
+    createRecipeWithIngredients: (data: createRecipeWithIngredientsData) => post<Recipe>('/recipes/with-ingredients', data),
+    createIngredient: (data: Ingredient) => post<Ingredient>('/ingredient', data)
 
-    createRecipeWithIngredients: (data: createRecipeWithIngredientsData) => post<Recipe>('/recipes/with-ingredients', data)
+    
 };

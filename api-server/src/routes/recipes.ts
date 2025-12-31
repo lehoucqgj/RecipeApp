@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRecipeWithIngredients, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName } from '../db/queries.js';
+import { createRecipeWithIngredients, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName, createIngredient } from '../db/queries.js';
 
 const router = express.Router();
 
@@ -82,14 +82,24 @@ router.get('/recipes/:id/ingredients', async (req, res, next) =>{
   }
 });
 
-router.get('/ingredient/:name', async (req, res) =>{
+router.get('/ingredient/:name', async (req, res, next) =>{
   const ingredientName = req.params.name;
   try{
     const ingredient = await getIngredientByName(ingredientName);
     res.json(ingredient);
-  } catch{
-    console.log("error getting ingredient with that name");
+  } catch(err) {
+    next(err);
   }
 });
+
+router.post('/ingredient', async (req, res, next) => {
+  const ingredient = req.body;
+  try {
+    const newIngredient = await createIngredient(ingredient);
+    res.status(201).json(newIngredient);
+  } catch(err){
+    next(err);
+  }
+})
 
 export default router;

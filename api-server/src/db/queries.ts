@@ -20,7 +20,7 @@ interface Ingredient{
   id?: number;
   name: string;
   type?: string;
-  seasong?: string;
+  season?: string;
 }
 
 
@@ -42,23 +42,7 @@ interface Ingredient{
 //   } 
 // }
 
-// export const addIngredient = async (ingredient: RecipeIngredient) => {
-//   const db = getDb();
-//   const result = await db.run(
-//     `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
-//      VALUES (?, ?, ?, ?);`,
-//     ingredient.recipeId,
-//     ingredient.ingredientId,
-//     ingredient.quantity,
-//     ingredient.quantifier
-//     );
-//     return {
-//       recipeId: ingredient.recipeId,
-//       ingredientId: ingredient.ingredientId,
-//       quantity: ingredient.quantity,
-//       quantifier: ingredient.quantifier
-//     }
-// }
+
 
 export const createRecipeWithIngredients = async (
   recipe: Recipe,
@@ -111,6 +95,41 @@ export const createRecipeWithIngredients = async (
     }
   }
 
+export const createIngredient = async(ingredient: Ingredient) => {
+  const db = getDb();
+  const result = await db.run(
+    `INSERT INTO Ingredients (name, type, season)
+    VALUES (?, ?, ?);`,
+    ingredient.name,
+    ingredient.type,
+    ingredient.season
+  );
+  return {
+    id: result.lastID,
+    name: ingredient.name,
+    type: ingredient.type,
+    season: ingredient.season
+  }
+}
+
+
+// export const addIngredient = async (ingredient: RecipeIngredient) => {
+//   const db = getDb();
+//   const result = await db.run(
+//     `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
+//      VALUES (?, ?, ?, ?);`,
+//     ingredient.recipeId,
+//     ingredient.ingredientId,
+//     ingredient.quantity,
+//     ingredient.quantifier
+//     );
+//     return {
+//       recipeId: ingredient.recipeId,
+//       ingredientId: ingredient.ingredientId,
+//       quantity: ingredient.quantity,
+//       quantifier: ingredient.quantifier
+//     }
+// }
 export const getAllRecipes = async (): Promise<Recipe[]> =>{
     const db = getDb();
   return db.all('SELECT * FROM Recipes;');
