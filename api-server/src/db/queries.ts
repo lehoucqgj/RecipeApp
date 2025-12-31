@@ -16,6 +16,13 @@ interface RecipeIngredientDetail{
   quantifier: string;
 }
 
+interface Ingredient{
+  id?: number;
+  name: string;
+  type?: string;
+  seasong?: string;
+}
+
 
 // export const createRecipe = async (recipe: Recipe) => {
 //     const db = getDb();
@@ -131,9 +138,9 @@ export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngred
           }));
 }
 
-// export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
-//   const db = getDb();
-//   return db.get(`SELECT id, name
-//                 FROM Ingredients
-//                 WHERE name = ?;`, name);
-// }
+export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
+  const db = getDb();
+  return db.get(`SELECT *
+                FROM Ingredients
+                WHERE name = ?;`, name);
+}

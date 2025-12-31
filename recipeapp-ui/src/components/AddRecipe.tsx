@@ -53,7 +53,7 @@ export const AddRecipe = () => {
             setStep(2);
     };
     
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleNewRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try{
             setLoading(true);
@@ -71,11 +71,23 @@ export const AddRecipe = () => {
             setError("Failed to create Recipe");
             console.log(err);
         } finally {
-            (setLoading(false))
+            setLoading(false);
+        }
+    }
+    const handleNewIngredientSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            setError(null);
+        } catch(err) {
+            setError("Failed to create ingredient");
+            console.log(err);            
+        } finally {
+            setLoading(false);
         }
     }
 
-    const AddIngredient = () => {
+    const AddIngredientToIngredientList = () => {
         setError(null);
         if (!ingredientsFormData.name || ingredientsFormData.quantity <= 0 || !ingredientsFormData.quantifier){
             setError("Please fill in all required fields");
@@ -85,7 +97,15 @@ export const AddRecipe = () => {
             setError("Duplicate ingredient.");
             return
         }
-        //TODO: Check if the ingredient already exists in db, if not go to another form to add it.
+        if (!recipeApi.getIngredientByName(ingredientsFormData.name)){
+            const createIngredient = window.confirm('Create ingredient?');
+            if (createIngredient){
+                setStep(3);
+                // do stuff
+            } else {
+                return;
+            }
+        }
         setIngredientList(prev => [...prev, ingredientsFormData]);
     }
 
@@ -164,7 +184,7 @@ export const AddRecipe = () => {
             )}
 
             {step === 2 &&(
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleNewRecipeSubmit}>
                     <div className="flex flex-col w-2/5 mx-auto text-[#fafafa]">
                         <h2 className="text-xl mb-6 ">Add ingredients</h2>
                         <div className={inputRowStyle}>
@@ -216,7 +236,7 @@ export const AddRecipe = () => {
                             </div>
                             {error && <div className="text-red-700">{error}</div>}
                             <button type="button" disabled={loading}
-                                onClick={AddIngredient}
+                                onClick={AddIngredientToIngredientList}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2">
                                 Add Ingredient
                             </button>
@@ -229,6 +249,52 @@ export const AddRecipe = () => {
                     </div>
                 </form>
             )}
+            {step === 3 && (
+                <form onSubmit={handleNewIngredientSubmit}>
+                    <div className="flex flex-col w-2/5 mx-auto text-[#fafafa]">
+                        <h2 className="text-xl mb-6 ">Add ingredients</h2>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Ingredient Name:</label>
+                            <input 
+                                type="text"
+                                name="name"
+                                value={ingredientsFormData.name}
+                                onChange={handleChange}
+                                placeholder="Name"
+                                className={inputBoxStyle}
+                                required
+                                />
+                        </div>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Ingredient Type:</label>
+                            <input 
+                                type="text"
+                                name="name"
+                                value={ingredientsFormData.name}
+                                onChange={handleChange}
+                                placeholder="Name"
+                                className={inputBoxStyle}
+                                />
+                        </div>
+                        <div className={inputRowStyle}>
+                            <label className="flex-1">Ingredient Season:</label>
+                            <input 
+                                type="text"
+                                name="name"
+                                value={ingredientsFormData.name}
+                                onChange={handleChange}
+                                placeholder="Name"
+                                className={inputBoxStyle}
+                                />
+                        </div>
+                         <button type="submit" disabled={loading}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6 w-5/6 mx-auto">
+                            {loading ? 'Creating...' : 'Create ingredient'}
+                        </button>
+                    </div>
+                </form>
+            )}
+
         </>
     );
 }

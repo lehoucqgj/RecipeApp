@@ -30,6 +30,8 @@ export interface RecipeIngredientDetails {
 export interface Ingredient {
     id?: number;
     name: string;
+    type?: string;
+    season?: string;
 }
 
 export interface createRecipeWithIngredientsData {
