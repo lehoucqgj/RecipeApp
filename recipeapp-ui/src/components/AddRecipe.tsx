@@ -29,6 +29,15 @@ export const AddRecipe = () => {
     const [step, setStep] = useState(1);
     
     const [ingredientList, setIngredientList] = useState<RecipeIngredientInput[]>([]);
+    const [allIngredients, setAllIngredients]   = useState<Ingredient[]>([]);
+
+    useEffect(() => {
+        const fetchIngredients = async () => {
+            const Ingredients = await recipeApi.getAllIngredients();
+            setAllIngredients(Ingredients);
+        };
+        fetchIngredients();
+    }, []);
     
     // TODO: check out to change stepstate stuff to components.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,7 +86,6 @@ export const AddRecipe = () => {
                 recipe: recipeFormData,
                 ingredients: ingredients
             });
-            // TODO: doublecheck this irl
             setStep(1);
         } catch(err) {
             setError("Failed to create Recipe");
@@ -92,6 +100,10 @@ export const AddRecipe = () => {
             setLoading(true);
             setError(null);
             await recipeApi.createIngredient(newIngredientFormData);
+            //this all looks very expensive
+            const updatedIngredients = await recipeApi.getAllIngredients();
+            setAllIngredients(updatedIngredients);
+            setStep(2);
         } catch(err) {
             setError("Failed to create ingredient");
             console.log(err);            
@@ -100,7 +112,7 @@ export const AddRecipe = () => {
         }
     }
 
-    const AddIngredientToIngredientList = () => {
+    const AddIngredientToIngredientList = async () => {
         setError(null);
         if (!ingredientsFormData.name || ingredientsFormData.quantity <= 0 || !ingredientsFormData.quantifier){
             setError("Please fill in all required fields");
@@ -110,11 +122,12 @@ export const AddRecipe = () => {
             setError("Duplicate ingredient.");
             return
         }
-        if (!recipeApi.getIngredientByName(ingredientsFormData.name)){
+        const exists = allIngredients.some(ingr => ingr.name === ingredientsFormData.name)
+        if (!exists){
             const createIngredient = window.confirm('Create ingredient?');
             if (createIngredient){
                 setStep(3);
-                // do stuff
+                return;
             } else {
                 return;
             }
@@ -271,7 +284,7 @@ export const AddRecipe = () => {
                             <input 
                                 type="text"
                                 name="name"
-                                value={ingredientsFormData.name}
+                                value={newIngredientFormData.name}
                                 onChange={handleChange}
                                 placeholder="Name"
                                 className={inputBoxStyle}
@@ -282,10 +295,10 @@ export const AddRecipe = () => {
                             <label className="flex-1">Ingredient Type:</label>
                             <input 
                                 type="text"
-                                name="name"
-                                value={ingredientsFormData.name}
+                                name="type"
+                                value={newIngredientFormData.type}
                                 onChange={handleChange}
-                                placeholder="Name"
+                                placeholder="Type of ingredient"
                                 className={inputBoxStyle}
                                 />
                         </div>
@@ -293,10 +306,10 @@ export const AddRecipe = () => {
                             <label className="flex-1">Ingredient Season:</label>
                             <input 
                                 type="text"
-                                name="name"
-                                value={ingredientsFormData.name}
+                                name="season"
+                                value={newIngredientFormData.season}
                                 onChange={handleChange}
-                                placeholder="Name"
+                                placeholder="Which season to eat it"
                                 className={inputBoxStyle}
                                 />
                         </div>

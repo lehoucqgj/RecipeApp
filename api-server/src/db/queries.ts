@@ -157,9 +157,14 @@ export const getIngredientsByRecipeId = async (id: number): Promise<RecipeIngred
           }));
 }
 
-export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
+export const getAllIngredients = async (): Promise<Ingredient[]> => {
   const db = getDb();
-  return db.get(`SELECT *
-                FROM Ingredients
-                WHERE name = ?;`, name);
+  return db.all('SELECT * FROM Ingredients;');
 }
+
+// export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
+//   const db = getDb();
+//   return db.get(`SELECT *
+//                 FROM Ingredients
+//                 WHERE name = ?;`, name);
+// }

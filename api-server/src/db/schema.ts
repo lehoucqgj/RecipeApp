@@ -29,7 +29,7 @@ export const initDb = async () => {
       recipe_id INTEGER,
       ingredient_id INTEGER,
       quantity INTEGER,
-      quantifier TEXT
+      quantifier TEXT,
       PRIMARY KEY (recipe_id, ingredient_id),
       FOREIGN KEY (recipe_id) REFERENCES Recipes(id) ON DELETE CASCADE,
       FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id) ON DELETE CASCADE

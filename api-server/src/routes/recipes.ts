@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRecipeWithIngredients, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, getIngredientByName, createIngredient } from '../db/queries.js';
+import { createRecipeWithIngredients, getAllIngredients, getAllRecipes, getRecipeById, deleteRecipeById, getIngredientsByRecipeId, createIngredient } from '../db/queries.js';
 
 const router = express.Router();
 
@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
 //   }
 // });
 
+//TODO: Probably should make multiple routes files
 router.post('/recipes/with-ingredients', async (req, res, next) => {
   const {recipe, ingredients} = req.body;
   try{
@@ -82,15 +83,26 @@ router.get('/recipes/:id/ingredients', async (req, res, next) =>{
   }
 });
 
-router.get('/ingredient/:name', async (req, res, next) =>{
-  const ingredientName = req.params.name;
-  try{
-    const ingredient = await getIngredientByName(ingredientName);
-    res.json(ingredient);
-  } catch(err) {
+// can likely be used to update ingredients later on
+// router.get('/ingredient/:name', async (req, res, next) =>{
+//   const ingredientName = req.params.name;
+//   try{
+//     const ingredient = await getIngredientByName(ingredientName);
+//     res.json(ingredient);
+//   } catch(err) {
+//     next(err);
+//   }
+// });
+
+router.get('/ingredients', async (req, res, next) => {
+  try {
+    const ingredients = await getAllIngredients();
+    res.json(ingredients);
+  } catch (err) {
     next(err);
   }
 });
+
 
 router.post('/ingredient', async (req, res, next) => {
   const ingredient = req.body;
@@ -103,3 +115,4 @@ router.post('/ingredient', async (req, res, next) => {
 })
 
 export default router;
+
