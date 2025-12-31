@@ -10,13 +10,17 @@ export const initDb = async () => {
     `CREATE TABLE IF NOT EXISTS Recipes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
-      time_to_prepare INTEGER NOT NULL
+      time_to_prepare INTEGER NOT NULL,
+      instructions TEXT,
+      servings INTEGER
       );`  
     );
       await db.exec(
     `CREATE TABLE IF NOT EXISTS Ingredients (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      type TEXT,
+      season TEXT
       );`  
     );
       await db.exec(
@@ -24,7 +28,8 @@ export const initDb = async () => {
     `CREATE TABLE IF NOT EXISTS RecipeIngredients (
       recipe_id INTEGER,
       ingredient_id INTEGER,
-      quantity TEXT,
+      quantity INTEGER,
+      quantifier TEXT
       PRIMARY KEY (recipe_id, ingredient_id),
       FOREIGN KEY (recipe_id) REFERENCES Recipes(id) ON DELETE CASCADE,
       FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id) ON DELETE CASCADE
