@@ -117,9 +117,12 @@ export const AddRecipe = () => {
                 recipe: recipeFormData,
                 ingredients: ingredients
             });
+
             clearRecipeForm();
             clearIngredientForm();
+            setIngredientList([]);
             clearNewIngredientForm();
+
             setStep(1);
         } catch(err) {
             setError("Failed to create Recipe");
@@ -139,9 +142,11 @@ export const AddRecipe = () => {
             const updatedIngredients = await recipeApi.getAllIngredients();
             setAllIngredients(updatedIngredients);
             setIngredientList(prev => [...prev, ingredientsFormData]);
-            setStep(2);
+
             clearIngredientForm();
             clearNewIngredientForm();
+            
+            setStep(2);
         } catch(err) {
             setError("Failed to create ingredient");
             console.log(err);            
@@ -174,12 +179,6 @@ export const AddRecipe = () => {
         setIngredientList(prev => [...prev, ingredientsFormData]);
         clearIngredientForm();
     }
-
-    // checking up on them datas
-    useEffect(() => {
-        console.log(ingredientList);
-    }, [ingredientList]);
-
 
     return (
         

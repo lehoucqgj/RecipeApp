@@ -8,27 +8,6 @@ router.get('/', (req, res) => {
 });
 
 //TODO: implement error handling middleware
-
-// router.post('/recipes', async (req, res, next) => {
-//   const { name, timeToPrepare, instructions, servings } = req.body;
-//   try {
-//     const newRecipe = await createRecipe({name, timeToPrepare, instructions, servings});
-//     res.status(201).json(newRecipe);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// router.post('/recipes/ingredient', async (req, res, next) =>{
-//   try{
-//     const { recipeId, ingredientId, quantity, quantifier } = req.body;
-//     const newRecipeIngredient = await addIngredient({recipeId, ingredientId, quantity, quantifier});
-//     res.status(201).json(newRecipeIngredient);
-//   } catch(err){
-//     next(err);
-//   }
-// });
-
 //TODO: Probably should make multiple routes files
 router.post('/recipes/with-ingredients', async (req, res, next) => {
   const {recipe, ingredients} = req.body;
