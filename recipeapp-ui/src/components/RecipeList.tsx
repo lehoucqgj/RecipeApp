@@ -67,13 +67,12 @@ export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: Reci
 
     const addBtnClick = async (id: number) => {
       const containsRecipe = shoppinglist.some(item => item.recipeId === id);
-      //TODO: Give a warning to the user to, not just the console.
       if (containsRecipe){
-        console.warn(`Recipe already in the weekmenu.`);
+        window.alert("Recipe already in the weekmenu.")
         return;
       }
       if (recipeCount >= 7){
-        console.warn('You already selected 7 recipes');
+        window.alert("You already selected 7 recipes.")
         return;
       }
       const data = await recipeApi.getAllRecipeIngredients(id);

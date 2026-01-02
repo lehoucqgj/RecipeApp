@@ -42,26 +42,50 @@ export const AddRecipe = () => {
     // TODO: check out to change stepstate stuff to components.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
-        if (step === 1){
-            setRecipeFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
-        }
-        else if (step === 2){
-            setIngredientsFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
-        }
-        else if (step === 3){
-            setNewIngredientFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
+        switch (step){
+            case 1:
+                setRecipeFormData(prev => ({
+                    ...prev,
+                    [name]: value
+                }));
+                break;
+            case 2: 
+                setIngredientsFormData(prev => ({
+                    ...prev,
+                    [name]: value
+                }));
+                break;
+            case 3:
+                setNewIngredientFormData(prev => ({
+                    ...prev,
+                    [name]: value
+                }));            
         }
     };
-    
+
+    const clearIngredientForm = () => {
+        setIngredientsFormData({
+            name: '',
+            quantity: 0,
+            quantifier: ''
+        });
+    }
+    const clearNewIngredientForm = () => {
+        setNewIngredientFormData({
+            name: '',
+            type: '',
+            season: ''
+        });
+    }
+    const clearRecipeForm = () => {
+        setRecipeFormData({
+            name: '',
+            timeToPrepare: 0,
+            instructions: '',
+            servings: 0
+        })
+    }
+
     const createRecipe = () => {
         setError(null);
             if(!recipeFormData.name || recipeFormData.timeToPrepare <= 0){
@@ -77,6 +101,13 @@ export const AddRecipe = () => {
         try{
             setLoading(true);
             setError(null);
+
+            if(ingredientList.length === 0){
+                setError("Please add at least one ingredient.");
+                setLoading(false);
+                return;
+            }
+
             const ingredients = ingredientList.map(ingr => ({
                 name: ingr.name,
                 quantity: ingr.quantity,
@@ -86,6 +117,9 @@ export const AddRecipe = () => {
                 recipe: recipeFormData,
                 ingredients: ingredients
             });
+            clearRecipeForm();
+            clearIngredientForm();
+            clearNewIngredientForm();
             setStep(1);
         } catch(err) {
             setError("Failed to create Recipe");
@@ -99,11 +133,15 @@ export const AddRecipe = () => {
         try {
             setLoading(true);
             setError(null);
+
             await recipeApi.createIngredient(newIngredientFormData);
             //this all looks very expensive
             const updatedIngredients = await recipeApi.getAllIngredients();
             setAllIngredients(updatedIngredients);
+            setIngredientList(prev => [...prev, ingredientsFormData]);
             setStep(2);
+            clearIngredientForm();
+            clearNewIngredientForm();
         } catch(err) {
             setError("Failed to create ingredient");
             console.log(err);            
@@ -126,6 +164,7 @@ export const AddRecipe = () => {
         if (!exists){
             const createIngredient = window.confirm('Create ingredient?');
             if (createIngredient){
+                newIngredientFormData.name = ingredientsFormData.name;
                 setStep(3);
                 return;
             } else {
@@ -133,6 +172,7 @@ export const AddRecipe = () => {
             }
         }
         setIngredientList(prev => [...prev, ingredientsFormData]);
+        clearIngredientForm();
     }
 
     // checking up on them datas
@@ -213,6 +253,7 @@ export const AddRecipe = () => {
                 <form onSubmit={handleNewRecipeSubmit}>
                     <div className="flex flex-col w-2/5 mx-auto text-[#fafafa]">
                         <h2 className="text-xl mb-6 ">Add ingredients</h2>
+                        {error && <div className="text-red-700">{error}</div>}
                         <div className={inputRowStyle}>
                             <label className="flex-1">Ingredient Name:</label>
                             <input 
@@ -222,7 +263,6 @@ export const AddRecipe = () => {
                                 onChange={handleChange}
                                 placeholder="Name"
                                 className={inputBoxStyle}
-                                required
                                 />
                         </div>
                         <div className={inputRowStyle}>
@@ -234,7 +274,6 @@ export const AddRecipe = () => {
                                 onChange={handleChange}
                                 placeholder="Quantity"
                                 className={inputBoxStyle}
-                                required
                         />
                         </div>
                         <div className={inputRowStyle}>
@@ -246,7 +285,6 @@ export const AddRecipe = () => {
                                 onChange={handleChange}
                                 placeholder="Quantifier"
                                 className={inputBoxStyle}
-                                required
                             />
                         </div>
                         <div>
