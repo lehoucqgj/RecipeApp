@@ -5,3 +5,5 @@ border nav: 9E0031
 navbar text: dbbc74
 
 navbar green border: 0f766e
+
+maybe colour for the homepage: D4CB6A
