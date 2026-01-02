@@ -18,7 +18,7 @@ export const RecipeComponent = ({
             <div className="m-2 p-1 border rounded-xl border-[#121918] bg-[#242b38] self-start">
             {/*clickable thingy*/}
                 <div
-                    className="pb-1 font-bold cursor-pointer text-[#e6f2f1] border-b border-[#121918]"
+                    className="pb-1 font-bold cursor-pointer text-[#DCF938]"
                     onClick={() => recipe.id && onRecipeClick(recipe.id)}
                 >
                     {recipe.name} {recipe.timeToPrepare && ` - ${recipe.timeToPrepare}`}
@@ -26,7 +26,7 @@ export const RecipeComponent = ({
 
                 { isExpanded && (
                     <>
-                    <div className="container flex justify-center my-2 border-t border-[#121918] pt-2">
+                    <div className="container flex justify-center my-2 border-t border-b pb-3 border-[#121918] pt-2">
                         <ul className="flex-1 text-center text-[#e3e5e5]">
                             {ingredients.map(ingr => (
                                 <li key={`${ingr.ingredientId}-${recipe.id}`}>
@@ -37,7 +37,7 @@ export const RecipeComponent = ({
                     </div>
 
                     <button 
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2"
                         onClick={(e) => {
                             e.stopPropagation();
                             if(recipe.id){
