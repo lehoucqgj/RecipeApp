@@ -23,27 +23,6 @@ interface Ingredient{
   season?: string;
 }
 
-
-// export const createRecipe = async (recipe: Recipe) => {
-//     const db = getDb();
-//   const result = await db.run(
-//     'INSERT INTO Recipes (name, time_to_prepare, instructions, servings) VALUES (?, ?, ?, ?);',
-//     recipe.name,
-//     recipe.timeToPrepare,
-//     recipe.instructions,
-//     recipe.servings
-//   );
-//   return {
-//     id: result.lastID,
-//     name: recipe.name,
-//     timeToPrepare: recipe.timeToPrepare,
-//     instructions: recipe.instructions,
-//     servings: recipe.servings
-//   } 
-// }
-
-
-
 export const createRecipeWithIngredients = async (
   recipe: Recipe,
   ingredients: Array<{name: string, quantity: number, quantifier: string}> ) => {
@@ -112,24 +91,6 @@ export const createIngredient = async(ingredient: Ingredient) => {
   }
 }
 
-
-// export const addIngredient = async (ingredient: RecipeIngredient) => {
-//   const db = getDb();
-//   const result = await db.run(
-//     `INSERT INTO RecipeIngredients (recipe_id, ingredient_id, quantity, quantifier)
-//      VALUES (?, ?, ?, ?);`,
-//     ingredient.recipeId,
-//     ingredient.ingredientId,
-//     ingredient.quantity,
-//     ingredient.quantifier
-//     );
-//     return {
-//       recipeId: ingredient.recipeId,
-//       ingredientId: ingredient.ingredientId,
-//       quantity: ingredient.quantity,
-//       quantifier: ingredient.quantifier
-//     }
-// }
 export const getAllRecipes = async (): Promise<Recipe[]> =>{
     const db = getDb();
   return db.all('SELECT * FROM Recipes;');
@@ -162,6 +123,7 @@ export const getAllIngredients = async (): Promise<Ingredient[]> => {
   return db.all('SELECT * FROM Ingredients;');
 }
 
+//might be usefull later.
 // export const getIngredientByName = async (name: string): Promise<Ingredient | undefined> => {
 //   const db = getDb();
 //   return db.get(`SELECT *

@@ -34,15 +34,9 @@ export const RecipeList = ({ shoppinglist: shoppinglist, setShoppinglist }: Reci
         fetchRecipes();       
     },[]);
 
-  // To check up on them datas
-  useEffect(() => {
-    console.log("Updated shopping list:", shoppinglist);
-  }, [shoppinglist]);
-
     if(loading) return <div className="text-gray-300">Loading</div>;
     if(error) return <div className="text-red-600">Error: {error}</div>;
     
-
     const handleRecipeClick = async (recipeId: number) => {
       if (expandedRecipeId === recipeId){
         setExpandedRecipeId(null);
