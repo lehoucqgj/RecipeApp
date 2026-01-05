@@ -9,7 +9,6 @@ const port = 3000;
 
 app.use(express.json());
 //getting the routes from recipes.ts
-
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST'],
